@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Clase central encargada de dirigir la comunicacion entre la interfaz 
+   implementada, y la clase ControladorEventos. Redirige datos de entrada y 
+   salida entre ambos. 
  */
 package simulación.io;
 
@@ -15,7 +15,11 @@ public class SimulaciónIO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+    // TODO code application logic here
+        
+        
+        
     }
     
 }
