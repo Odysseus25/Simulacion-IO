@@ -79,12 +79,8 @@ public class ControladorEventos {
         //se llenan los atributos de los eventos
         //maqA.numEvent = 1;
         maqA.time = timeFileA();
-<<<<<<< HEAD
         maqA.nombre= "Llega archivo a maquina A";
         temp =maqA.getTime();
-=======
-        maqA.nombre= "Llega archivo a A";
->>>>>>> origin/master
         
         //maqB.numEvent = 2;
         maqB.time = timeFileB();
@@ -217,7 +213,7 @@ public class ControladorEventos {
             priorityFileC2.add(C);
         }
         
-        maqC = clock + timeFileC();
+        maqC.time = clock + timeFileC();
         events.add(maqC);
     }
     
