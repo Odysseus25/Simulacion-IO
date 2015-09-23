@@ -27,9 +27,9 @@ public class ControladorEventos {
     
     static class File{                   // Clase que maneja las caracteristicas de los archivos
         
-        double tiempoEnSistema;
-        int prioridad;
-        int tamanio;
+        double systemTime;
+        int priority;
+        int size;
     }
     
     //clase que compara el tiempo de reloj de los eventos para ordenarlos
@@ -79,8 +79,12 @@ public class ControladorEventos {
         //se llenan los atributos de los eventos
         //maqA.numEvent = 1;
         maqA.time = timeFileA();
+<<<<<<< HEAD
         maqA.nombre= "Llega archivo a maquina A";
         temp =maqA.getTime();
+=======
+        maqA.nombre= "Llega archivo a A";
+>>>>>>> origin/master
         
         //maqB.numEvent = 2;
         maqB.time = timeFileB();
@@ -159,18 +163,62 @@ public class ControladorEventos {
      return randomWithRange(1, 64);   
     }
     
-    public void llegaArchivoA(){
-        //clock = (events.poll()).getTime();
+    public void FileArrivesA(){
         
+        Event maqA = events.poll();                 // Se saca el evento de la priority queue
+        clock = maqA.getTime();
+        File A = new File();
         
+        A.systemTime = clock;                       // Se modifican los valores del nuevo evento
+        A.priority = filePriority();
+        A.size = fileSize();
+        
+        if(A.priority == 1){                        // Se agrega a la lista de prioridad de la maquina el archivo
+            priorityFileA1.add(A);
+        }else{
+            priorityFileA2.add(A);
+        }
+        
+        maqA.time = clock + timeFileA();            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
+        events.add(maqA);                           // Se vuelve a agregar el evento con nuevos valores
     }
     
-    public void llegaArchivoB(){
-        clock = (events.poll()).getTime();
+    public void fileArrivesB(){
+        Event maqB = events.poll();
+        clock = maB.getTime();
+        File B = new File();
+        
+        B.systemTime = clock;
+        B.priority = filePriority();
+        A.size = fileSize();
+        
+        if(B.priority == 1){
+            priorityFileB1.add(B);
+        }else{
+            priorityFileB2.add(B);
+        }
+        
+        maqB.time = clock + timeFileB();
+        events.add(maqB);
     }
     
-    public void llegaArchivoC(){
-        clock = (events.poll()).getTime();
+    public void fileArrivesC(){
+        Event maqC = events.poll();
+        clock = maqC.getTime();
+        File C = new File();
+        
+        C.systemTime = clock;
+        C.priority = filePriority();
+        C.size = fileSize();
+        
+        if(C.priority == 1){
+            priorityFileC1.add(C);
+        }else{
+            priorityFileC2.add(C);
+        }
+        
+        maqC = clock + timeFileC();
+        events.add(maqC);
     }
     
     public void terminaEnviarArchivo(){
