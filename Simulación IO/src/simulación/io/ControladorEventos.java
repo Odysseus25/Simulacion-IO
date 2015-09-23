@@ -6,6 +6,7 @@
 package simulación.io;
 import java.util.*;
 import java.lang.Math;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,6 +25,36 @@ public class ControladorEventos {
         }
     }
     
+    static class File{                   // Clase que maneja las caracteristicas de los archivos
+        
+        double tiempoEnSistema;
+        int prioridad;
+        int tamanio;
+    }
+    
+    
+    /** Declaracion Variables globales **/
+    
+    //reloj global de la simulacion
+    double clock; 
+    MyComparator comparator = new MyComparator();  
+    PriorityQueue<Event> events = new PriorityQueue<>(13, comparator);  //cola de prioridad que ordena los eventos por tiempo
+    
+    ArrayList <Archive> priorityFileA1 = new ArrayList <Archive>();     // Cola de prioridad de archivos 1 maquina A
+    ArrayList <Archive> priorityFileA2 = new ArrayList <Archive>();     // Cola de prioridad de archivos 2 maquina A
+        
+    ArrayList <Archive> priorityFileB1 = new ArrayList <Archive>();     // Cola de prioridad de archivos 1 maquina B
+    ArrayList <Archive> priorityFileB2 = new ArrayList <Archive>();     // Cola de prioridad de archivos 2 maquina B
+    
+    ArrayList <Archive> priorityFileC1 = new ArrayList <Archive>();     // Cola de prioridad de archivos 1 maquina C
+    ArrayList <Archive> priorityFileC2 = new ArrayList <Archive>();     // Cola de prioridad de archivos 2 maquina C
+    
+    
+    
+    // ---------------- Fin de declaracion---------------------------------------- //
+    
+    
+    
     //clase que compara el tiempo de reloj de los eventos para ordenarlos
     //Es usada por el priority queue para ordenar los eventos
     static class MyComparator implements Comparator<Event> {
@@ -33,10 +64,6 @@ public class ControladorEventos {
         return result;
     }
 }
-    //reloj global de la simulacion
-    double clock; 
-    MyComparator comparator = new MyComparator();  
-    PriorityQueue<Event> events = new PriorityQueue<>(13, comparator);  //cola de prioridad que ordena los eventos por tiempo
     
     //genera randoms en un intervalo
     public int randomWithRange(int min, int max){
@@ -74,7 +101,9 @@ public class ControladorEventos {
     
     //falta la logica para programar los eventos
     public void llegaArchivoA(){
-        clock = (events.poll()).getTime();
+        //clock = (events.poll()).getTime();
+        
+        
     }
     
     public void llegaArchivoB(){
