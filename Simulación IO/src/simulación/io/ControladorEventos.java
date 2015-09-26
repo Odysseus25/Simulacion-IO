@@ -494,12 +494,244 @@ public class ControladorEventos {
         }        
     }
     
-    public void terminaEnviarArchivo(){
+    public void tplama(){                                                       // Metodo que termina de poner en linea el archivo de la maquina A
+        Event tplama = events.poll();
+        tplama.numEvent = 7;
+        clock = tplama.getTime();
+        
+        if(tokenTime == 0){
+            tplama.time = 1000000;
+            //almacenar cantidad de archivos enviados
+            Event recB = new Event();
+            recB.numEvent = 5;
+            recB.time = clock;            
+        }else{
+            boolean availableSend = false;
+            int i = 0;
+            while(!availableSend && i < priorityFileA1.size()){
+                if( (priorityFileA1.get(i).size * 1/2) <= tokenTime ){
+                    availableSend = true;
+                }else{
+                    ++i;
+                }
+            }
+            
+            if(availableSend){
+                File A = priorityFileA1.get(i);
+                priorityFileA1.remove(i);
+                
+                Event LASA = new Event();                                           // Nuevo evento para este unico archivo
+                LASA.numEvent = 10;
+                LASA.time = clock + (A.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                events.add(LASA);
+                serverFiles.add(A);                                                 // Se agrega a la cola del servidor de antivirus
+
+                Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
+                TPLAMA.numEvent = 7;
+                TPLAMA.time = clock + (A.size * 1/2);
+                events.add(TPLAMA);
+                tokenTime -= (A.size * 1/2);
+                ++filesSend;
+            }else{
+                int j = 0;
+                while(!availableSend && j < priorityFileA2.size()){                 // Se fija si hay un archivo que se pueda enviar de la cola de prioridad 2
+                    if( (priorityFileA2.get(j).size * 1/2) <= tokenTime){
+                        availableSend = true;
+                    }else{
+                        ++j;
+                    }
+                }   
+                
+                if(availableSend){
+                    File A = priorityFileA2.get(j);
+                    priorityFileA2.remove(j);
+
+                    Event LASA = new Event();
+                    LASA.numEvent = 10;
+                    LASA.time = clock + ( A.size * 1/2 ) + 1/4;
+                    events.add(LASA);
+                    serverFiles.add(A);
+
+                    Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
+                    TPLAMA.numEvent = 7;
+                    TPLAMA.time = clock + (A.size * 1/2);
+                    events.add(TPLAMA);
+                    tokenTime -= (A.size * 1/2);
+                    ++filesSend;
+                }else{                
+                    
+                    tplama.time = 1000000;
+                    events.add(tplama);
+                    
+                    Event recB = new Event();
+                    recB.numEvent = 2;
+                    recB.time = clock;
+                    events.add(recB);
+
+                    // guardar la cantidad de archivos enviados                        
+                }                
+            }
+        }
     }
     
-    public void routerHilo1(){
+    public void tplamb(){                                                       // Metodo que termina de poner en linea el archivo de la maquina B
+        Event tplamb = events.poll();
+        tplamb.numEvent = 8;
+        clock = tplamb.getTime();
+        
+        if(tokenTime == 0){
+            tplamb.time = 1000000;
+            //almacenar cantidad de archivos enviados
+            Event recC = new Event();
+            recC.numEvent = 6;
+            recC.time = clock;            
+        }else{
+            boolean availableSend = false;
+            int i = 0;
+            while(!availableSend && i < priorityFileB1.size()){
+                if( (priorityFileB1.get(i).size * 1/2) <= tokenTime ){
+                    availableSend = true;
+                }else{
+                    ++i;
+                }
+            }
+            
+            if(availableSend){
+                File B = priorityFileB1.get(i);
+                priorityFileB1.remove(i);
+                
+                Event LASA = new Event();                                           // Nuevo evento para este unico archivo
+                LASA.numEvent = 10;
+                LASA.time = clock + (B.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                events.add(LASA);
+                serverFiles.add(B);                                                 // Se agrega a la cola del servidor de antivirus
+
+                Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina A
+                TPLAMB.numEvent = 8;
+                TPLAMB.time = clock + (B.size * 1/2);
+                events.add(TPLAMB);
+                tokenTime -= (B.size * 1/2);
+                ++filesSend;
+            }else{
+                int j = 0;
+                while(!availableSend && j < priorityFileB2.size()){                 // Se fija si hay un archivo que se pueda enviar de la cola de prioridad 2
+                    if( (priorityFileB2.get(j).size * 1/2) <= tokenTime){
+                        availableSend = true;
+                    }else{
+                        ++j;
+                    }
+                }   
+                
+                if(availableSend){
+                    File B = priorityFileB2.get(j);
+                    priorityFileB2.remove(j);
+
+                    Event LASA = new Event();
+                    LASA.numEvent = 10;
+                    LASA.time = clock + ( B.size * 1/2 ) + 1/4;
+                    events.add(LASA);
+                    serverFiles.add(B);
+
+                    Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina A
+                    TPLAMB.numEvent = 8;
+                    TPLAMB.time = clock + (B.size * 1/2); //////
+                    events.add(TPLAMB);
+                    tokenTime -= (B.size * 1/2);
+                    ++filesSend;
+                }else{                
+                    
+                    tplamb.time = 1000000;
+                    events.add(tplamb);
+                    
+                    Event recC = new Event();
+                    recC.numEvent = 6;
+                    recC.time = clock;
+                    events.add(recC);
+
+                    // guardar la cantidad de archivos enviados                        
+                }                
+            }
+        }        
     }
     
-    public void routerHilo2(){
+    public void tplamc(){
+        Event tplamc = events.poll();
+        tplamc.numEvent = 9;
+        clock = tplamc.getTime();
+        
+        if(tokenTime == 0){
+            tplamc.time = 1000000;
+            //almacenar cantidad de archivos enviados
+            Event recA = new Event();
+            recA.numEvent = 4;
+            recA.time = clock;            
+        }else{
+            boolean availableSend = false;
+            int i = 0;
+            while(!availableSend && i < priorityFileC1.size()){
+                if( (priorityFileC1.get(i).size * 1/2) <= tokenTime ){
+                    availableSend = true;
+                }else{
+                    ++i;
+                }
+            }
+            
+            if(availableSend){
+                File C = priorityFileC1.get(i);
+                priorityFileC1.remove(i);
+                
+                Event LASA = new Event();                                           // Nuevo evento para este unico archivo
+                LASA.numEvent = 10;
+                LASA.time = clock + (C.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                events.add(LASA);
+                serverFiles.add(C);                                                 // Se agrega a la cola del servidor de antivirus
+
+                Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina A
+                TPLAMC.numEvent = 9;
+                TPLAMC.time = clock + (C.size * 1/2);
+                events.add(TPLAMC);
+                tokenTime -= (C.size * 1/2);
+                ++filesSend;
+            }else{
+                int j = 0;
+                while(!availableSend && j < priorityFileC2.size()){                 // Se fija si hay un archivo que se pueda enviar de la cola de prioridad 2
+                    if( (priorityFileC2.get(j).size * 1/2) <= tokenTime){
+                        availableSend = true;
+                    }else{
+                        ++j;
+                    }
+                }   
+                
+                if(availableSend){
+                    File C = priorityFileC2.get(j);
+                    priorityFileC2.remove(j);
+
+                    Event LASA = new Event();
+                    LASA.numEvent = 10;
+                    LASA.time = clock + ( C.size * 1/2 ) + 1/4;
+                    events.add(LASA);
+                    serverFiles.add(C);
+
+                    Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina A
+                    TPLAMC.numEvent = 9;
+                    TPLAMC.time = clock + (C.size * 1/2); //////
+                    events.add(TPLAMC);
+                    tokenTime -= (C.size * 1/2);
+                    ++filesSend;
+                }else{                
+                    
+                    tplamc.time = 1000000;
+                    events.add(tplamc);
+                    
+                    Event recA = new Event();
+                    recA.numEvent = 4;
+                    recA.time = clock;
+                    events.add(recA);
+
+                    // guardar la cantidad de archivos enviados                        
+                }                
+            }
+        }
     }
+    
 }
