@@ -58,7 +58,7 @@ public class ControladorEventos {
         int size;
     }
     
-    static class Stadistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
+    static class Statistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
         int filesSend;
     }
     
@@ -87,8 +87,10 @@ public class ControladorEventos {
     ArrayList <File> priorityFileC2 = new ArrayList <File>();     // Cola de prioridad de archivos 2 maquina C
     
     ArrayList <File> serverFiles = new ArrayList <File>();        // Cola de archivos del servidor de antivirus
+    ArrayList <File> routerFiles = new ArrayList <File>();        // Cola de archivos del router
     
-    ArrayList <Stadistics> itStadistics = new ArrayList <Stadistics>();         // Cola que almacena las estadisticas por iteracion
+    ArrayList <Statistics> itStadistics = new ArrayList <Statistics>();         // Cola que almacena las estadisticas por iteracion
+    ArrayList <File> finishedFiles = new ArrayList <File>();
     
     double tokenTime;                                             // Se inicializa con el tiempo que define el usuario, usando el metodo set
     double originalTokenTime;                                     // Valor original del token obtenido de la interfaz
@@ -742,10 +744,11 @@ public class ControladorEventos {
         Event lasa = events.poll();
         lasa.numEvent = 10;
         clock = lasa.getTime();
-        if(antivirusAvailable){
-            File temp = serverFiles.get();
+        if(antivirusAvailable && serverFiles.size() != 0){
+            File temp = serverFiles.get(0);
+            serverFiles.remove(0);
             antivirusAvailable = false;
-            int quantityVirus = randomQuantityVirus; // generar random entre 0 y 3
+            int quantityVirus = randomWithRange(0,3); 
             
             if(quantityVirus == 0){
                 Event sla = new Event();
@@ -817,10 +820,10 @@ public class ControladorEventos {
         clock = sla.getTime();
         
         antivirusAvailable = true;
-        if(serverFiles.size() != 0){
+        if(serverFiles.size() != 0 && serverFiles.size() != 0){
             antivirusAvailable = false;
-            File temp = serverFiles.get();            
-            int quantityVirus = randomQuantityVirus();
+            File temp = serverFiles.get(0);            
+            int quantityVirus = randomWithRange(0,3);
             
             if(quantityVirus == 0){                
                 sla.numEvent = 11;
@@ -831,7 +834,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (temp.size / 8);
                 events.add(laar);                
-                // meter archivo a cola del router
+                routerFiles.add(temp);
                 // almacenar revisiones
             }
             
@@ -844,7 +847,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (3 * temp.size / 16);
                 events.add(laar);                
-                // meter archivo a cola del router
+                routerFiles.add(temp);
                 // almacenar revisiones                
             }
             
@@ -857,7 +860,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (11 * temp.size / 48);
                 events.add(laar);                
-                // meter archivo a cola del router
+                routerFiles.add(temp);
                 // almacenar revisiones
             }
             
@@ -865,7 +868,6 @@ public class ControladorEventos {
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
                 events.add(sla);
-                
                 // almacenar revisiones
             }
         }else{
@@ -879,24 +881,25 @@ public class ControladorEventos {
         laar.numEvent = 12;
         clock = laar.getTime();
         
-        if(transmisionLine1){
+        if(transmisionLine1 && routerFiles.size() != 0){
             transmisionLine1 = false;
             
-            File temp = colaRouter.get();
+            File temp = routerFiles.get(0);
+            routerFiles.remove(0);
             
             Event srlt1 = new Event();
             srlt1.numEvent = 13;
-            srlt1.time = //tamanoArchivotemp/64
+            srlt1.time = temp.size / 64 ;
             events.add(srlt1);
         }else{
-            if(transmisionLine2){
+            if(transmisionLine2 && routerFiles.size() != 0){
                 transmisionLine2 = false;
                 
-                File temp = colaRouter.get();
+                File temp = routerFiles.get(0);
                 
                 Event srlt2 = new Event();
                 srlt2.numEvent = 14;
-                srlt2.time = //tamanoArchivotemp/64                
+                srlt2.time = temp.size /64 ;               
                 events.add(srlt2);
                 
                 laar.time = 1000000;
@@ -914,20 +917,33 @@ public class ControladorEventos {
         clock = srlt1.getTime();
         transmisionLine1 = true;
         
-        //Archivo.tiempoEnSistema = SRLT1 - Archivo.tiempoEnSistema;
-        if(){}
-        
+        if(routerFiles.size() != 0){
+            File temp = routerFiles.get(0);
+            routerFiles.remove(0);
+            temp.systemTime = srlt1.getTime() - temp.systemTime;
+            srlt1.time = clock + (temp.size / 64);
+            events.add(srlt1);
+        }else{
+            srlt1.time = 1000000;
+            events.add(srlt1);
+        }        
     }
     
     public void srlt2(){                                                        // Salida de router por linea de transmision 1
         Event srlt2 = events.poll();
-        srlt2.numEvent = 13;
+        srlt2.numEvent = 14;
         clock = srlt2.getTime();
         transmisionLine1 = true;
         
-        //Archivo.tiempoEnSistema = SRLT1 - Archivo.tiempoEnSistema;
-        if(){}
-        
-    }
-    
+        if(routerFiles.size() != 0){
+            File temp = routerFiles.get(0);
+            routerFiles.remove(0);
+            temp.systemTime = srlt2.getTime() - temp.systemTime;
+            srlt2.time = clock + (temp.size / 64);
+            events.add(srlt2);
+        }else{
+            srlt2.time = 1000000;
+            events.add(srlt2);
+        }        
+    }    
 }
