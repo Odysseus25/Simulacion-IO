@@ -96,6 +96,10 @@ public class ControladorEventos {
     
     int filesSend;                                                // Archivos enviados por iteracion al recibir el token
     
+    boolean antivirusAvailable = true;
+    boolean transmisionLine1 = true;                                            // Lineas de transmision de router
+    boolean transmisionLine2 = true;
+    
     // ---------------- Fin de declaracion---------------------------------------- //
     
     
@@ -732,6 +736,198 @@ public class ControladorEventos {
                 }                
             }
         }
+    }
+    
+    public void lasa(){                                                         // Llega archivo a servidor de antivirus
+        Event lasa = events.poll();
+        lasa.numEvent = 10;
+        clock = lasa.getTime();
+        if(antivirusAvailable){
+            File temp = serverFiles.get();
+            antivirusAvailable = false;
+            int quantityVirus = randomQuantityVirus; // generar random entre 0 y 3
+            
+            if(quantityVirus == 0){
+                Event sla = new Event();
+                sla.numEvent = 11;
+                sla.time = clock + (temp.size / 8);
+                events.add(sla);
+                
+                lasa.time = 1000000;
+                events.add(lasa);
+                
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (temp.size / 8);
+                events.add(laar);
+                
+                // almacenar revisiones
+            }
+            if(quantityVirus == 1){
+                Event sla = new Event();
+                sla.numEvent = 11;
+                sla.time = clock + (3 * temp.size / 16);
+                events.add(sla);
+                
+                lasa.time = 1000000;
+                events.add(lasa);
+                
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (3 * temp.size / 16);
+                events.add(laar);
+                
+                // almacenar revisiones
+            }
+            if(quantityVirus == 2){
+                Event sla = new Event();
+                sla.numEvent = 11;
+                sla.time = clock + (11 * temp.size / 48);
+                events.add(sla);
+                
+                lasa.time = 1000000;
+                events.add(lasa);
+                
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (11 * temp.size / 48);
+                events.add(laar);
+                
+                // almacenar revisiones
+            }
+            if(quantityVirus == 3){
+                Event sla = new Event();
+                sla.numEvent = 11;
+                sla.time = clock + (11 * temp.size / 48);
+                events.add(sla);
+                
+                lasa.time = 1000000;
+                events.add(lasa);                
+                // almacenar revisiones
+            }
+        }else{
+            lasa.time = 1000000;
+            events.add(lasa);
+        }        
+    }
+    
+    public void sla(){                                                          // Se libera el antivirus
+        Event sla = events.poll();
+        sla.numEvent = 11;
+        clock = sla.getTime();
+        
+        antivirusAvailable = true;
+        if(serverFiles.size() != 0){
+            antivirusAvailable = false;
+            File temp = serverFiles.get();            
+            int quantityVirus = randomQuantityVirus();
+            
+            if(quantityVirus == 0){                
+                sla.numEvent = 11;
+                sla.time = clock + (temp.size / 8);
+                events.add(sla);
+             
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (temp.size / 8);
+                events.add(laar);                
+                // meter archivo a cola del router
+                // almacenar revisiones
+            }
+            
+            if(quantityVirus == 1){                
+                sla.numEvent = 11;
+                sla.time = clock + (3 * temp.size / 16);
+                events.add(sla);
+                
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (3 * temp.size / 16);
+                events.add(laar);                
+                // meter archivo a cola del router
+                // almacenar revisiones                
+            }
+            
+            if(quantityVirus == 2){                
+                sla.numEvent = 11;
+                sla.time = clock + (11 * temp.size / 48);
+                events.add(sla);
+                
+                Event laar = new Event();
+                laar.numEvent = 12;
+                laar.time = clock + (11 * temp.size / 48);
+                events.add(laar);                
+                // meter archivo a cola del router
+                // almacenar revisiones
+            }
+            
+            if(quantityVirus == 3){
+                sla.numEvent = 11;
+                sla.time = clock + (11 * temp.size / 48);
+                events.add(sla);
+                
+                // almacenar revisiones
+            }
+        }else{
+            sla.time = 1000000;
+            events.add(sla);
+        }
+    }
+    
+    public void laar(){                                                         // Llegada de archivo a router
+        Event laar = events.poll();
+        laar.numEvent = 12;
+        clock = laar.getTime();
+        
+        if(transmisionLine1){
+            transmisionLine1 = false;
+            
+            File temp = colaRouter.get();
+            
+            Event srlt1 = new Event();
+            srlt1.numEvent = 13;
+            srlt1.time = //tamanoArchivotemp/64
+            events.add(srlt1);
+        }else{
+            if(transmisionLine2){
+                transmisionLine2 = false;
+                
+                File temp = colaRouter.get();
+                
+                Event srlt2 = new Event();
+                srlt2.numEvent = 14;
+                srlt2.time = //tamanoArchivotemp/64                
+                events.add(srlt2);
+                
+                laar.time = 1000000;
+                events.add(laar);
+            }else{
+                laar.time = 1000000;
+                events.add(laar);
+            }
+        }
+    }
+    
+    public void srlt1(){                                                        // Salida de router por linea de transmision 1
+        Event srlt1 = events.poll();
+        srlt1.numEvent = 13;
+        clock = srlt1.getTime();
+        transmisionLine1 = true;
+        
+        //Archivo.tiempoEnSistema = SRLT1 - Archivo.tiempoEnSistema;
+        if(){}
+        
+    }
+    
+    public void srlt2(){                                                        // Salida de router por linea de transmision 1
+        Event srlt2 = events.poll();
+        srlt2.numEvent = 13;
+        clock = srlt2.getTime();
+        transmisionLine1 = true;
+        
+        //Archivo.tiempoEnSistema = SRLT1 - Archivo.tiempoEnSistema;
+        if(){}
+        
     }
     
 }
