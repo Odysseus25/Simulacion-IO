@@ -283,8 +283,8 @@ public class ControladorEventos {
     }
     
     //define el tamano de cada archivo
-    public double fileSize(){
-     return randomWithRange(1, 64);   
+    public int fileSize(){
+     return (int)randomWithRange(1, 64);   
     }
     
     
@@ -847,7 +847,7 @@ public class ControladorEventos {
             serverFiles.remove(0);
             antivirusAvailable = false;
 
-            double quantityVirus = randomWithRange(0,3); 
+            int quantityVirus = (int)randomWithRange(0,3); 
             
             if(quantityVirus == 0){
                 Event sla = new Event();
@@ -921,7 +921,7 @@ public class ControladorEventos {
         if(serverFiles.isEmpty() && serverFiles.isEmpty()){
             antivirusAvailable = false;
             File temp = serverFiles.get(0);            
-            double quantityVirus = randomWithRange(0,3);
+            int quantityVirus = (int)randomWithRange(0,3);
             
             if(quantityVirus == 0){                
                 sla.numEvent = 11;
