@@ -210,14 +210,14 @@ public class ControladorEventos {
         maqB.numEvent = 2;
         maqB.time = timeFileB();
         maqB.nombre = "Llega archivo a B";
-        if(temp > maqB.getTime()){
+        if(temp < maqB.getTime()){
             temp = maqB.getTime();
         }
         
         maqC.numEvent = 3;
         maqC.time = timeFileC();
         maqC.nombre = "Llega archivo a C";
-        if(temp > maqC.getTime()){
+        if(temp < maqC.getTime()){
             temp = maqC.getTime();
         }
         
@@ -230,7 +230,7 @@ public class ControladorEventos {
         if(rand > 0 && rand < 32){
             Event rcvTkA = new Event();
             rcvTkA.nombre = "Recibe token A";
-            rcvTkA.time = temp + 3; 
+            rcvTkA.time = temp + 0.01; 
             rcvTkA.numEvent = 4;
             events.add(rcvTkA);
         }
@@ -238,14 +238,14 @@ public class ControladorEventos {
             if(rand > 33 && rand < 65){
                 Event rcvTkB = new Event();
                 rcvTkB.nombre = "Recibe token B";
-                rcvTkB.time = temp + 3; 
+                rcvTkB.time = temp + 0.01; 
                 rcvTkB.numEvent = 5;
                 events.add(rcvTkB);
             }
             else{
                 Event rcvTkC = new Event();
                 rcvTkC.nombre = "Recibe token C";
-                rcvTkC.time = temp + 3; 
+                rcvTkC.time = temp + 0.01; 
                 rcvTkC.numEvent = 6;
                 events.add(rcvTkC);
             }
@@ -258,7 +258,7 @@ public class ControladorEventos {
         while(temp == 1){
             temp = Math.random();
         }
-        return (-1*(Math.log(1-temp)))/5;
+        return (-1*(Math.log(temp)))/5;
     }
     
     public double timeFileB(){
@@ -1015,7 +1015,7 @@ public class ControladorEventos {
         clock = srlt1.getTime();
         transmisionLine1 = true;
         
-        if(routerFiles.isEmpty()){
+        if(routerFiles.size() != 0){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
             generalFileTime.add(srlt1.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema 
@@ -1039,7 +1039,7 @@ public class ControladorEventos {
         clock = srlt2.getTime();
         transmisionLine1 = true;
         
-        if(routerFiles.isEmpty()){
+        if(routerFiles.size() != 0){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
             generalFileTime.add(srlt2.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema

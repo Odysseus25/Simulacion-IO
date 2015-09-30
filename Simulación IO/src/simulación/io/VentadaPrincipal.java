@@ -3,8 +3,8 @@
  */
 package simulación.io;
 
-import java.lang.System;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
-
+import java.util.Calendar;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
+import java.util.concurrent.TimeUnit;
 /**
  *
  * @author 
@@ -16,6 +16,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     double tiempoT;
     boolean modoLento = false;
     boolean modoRapido = false;
+    long sleep;                                                           // Variable que regula el modo lento o rapido de la simulacion
     
     
     
@@ -35,7 +36,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         longitudcolaprioridad3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        progressBar = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -90,7 +91,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         });
 
         correrSimulaciontxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        correrSimulaciontxt.setText("0");
 
         jLabel2.setText("Correr simulación: ");
 
@@ -101,7 +101,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         jLabel6.setText("Tiempo T:");
 
         tiempoTtxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        tiempoTtxt.setText("0.0");
         tiempoTtxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tiempoTtxtActionPerformed(evt);
@@ -111,7 +110,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         jLabel7.setText("segundos");
 
         corridaPorSimulaciontxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        corridaPorSimulaciontxt.setText("0.0");
 
         jLabel5.setText("segundos");
 
@@ -193,7 +191,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jToggleButton2)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -327,7 +325,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jRadioButton2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jToggleButton2)
                 .addGap(57, 57, 57))
@@ -374,58 +372,75 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     int peekMethod;
     //long prueba = 1000000000;
     String eventName = "";
-    //Calendar calendar = Calendar.getInstance();
     
+    if(modoLento){
+        sleep = 500;
+    }else{
+        sleep = 0;
+    }
     
-    while (counter <= correrSimulacion){
+    while (counter < correrSimulacion){
         totalSeconds = 0;        
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
         
         while(totalSeconds <= corridaPorSimulacion){
-            System.out.println("Estoy en ciclo");
-            System.out.println("cantidad de segundos: "+totalSeconds);
-            initialSeconds = System.currentTimeMillis();//calendar.get(Calendar.SECOND);    
-            System.out.println("segundos iniciales: "+initialSeconds);
+            Calendar calendar = Calendar.getInstance();
+            //System.out.println("cantidad de segundos: "+totalSeconds);
+            initialSeconds = calendar.get(Calendar.SECOND);    
+            //System.out.println("segundos iniciales: "+initialSeconds);
             newEvent.setEventTime();                                            // Arranca la simulacion
             
-            System.out.println("tiempo 1:"+newEvent.events.peek().nombre);
-            System.out.println("tiempo 1:"+newEvent.events.peek().time);
+            System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
             
             peekMethod = newEvent.events.peek().numEvent;
             
+            /**System.out.println("Evento 0: "+newEvent.events.peek().nombre);
+            System.out.println("Evento 0: "+newEvent.events.peek().time);
+            newEvent.events.poll();
+            System.out.println("Evento 1: "+newEvent.events.peek().nombre);
+            System.out.println("Evento 1: "+newEvent.events.peek().time);
+            newEvent.events.poll();
+            System.out.println("Evento 2: "+newEvent.events.peek().nombre);
+            System.out.println("Evento 2: "+newEvent.events.peek().time);
+            newEvent.events.poll();
+            System.out.println("Evento 3: "+newEvent.events.peek().nombre);
+            System.out.println("Evento 3: "+newEvent.events.peek().time);
+            newEvent.events.poll();**/
+            
             switch(peekMethod){
                 case 1:
-                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
-                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
+                    //System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.FileArrivesA();
                     eventName = "Máquina A recibe archivo";
-                    System.out.println("primero");
                     break;
                 case 2:
-                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
-                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
+                    //System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesB();
                     eventName = "Máquina B recibe archivo";
-                    System.out.println("segundo");
                     break;                
                 case 3:
-                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
-                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
+                    //System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesC();
                     eventName = "Máquina C recibe archivo";
-                    System.out.println("tercero");
                     break;
                 case 4:
                     newEvent.receivesTokenA();
                     eventName = "Máquina A recibe token";
+                    table1.setValueAt("Máquina A", 0, 2);
                     break;
                 case 5:
                     newEvent.receivesTokenB();
                     eventName = "Máquina B recibe token";
+                    table1.setValueAt("Máquina B", 0, 2);
                     break;
                 case 6:
                     newEvent.receivesTokenC();
                     eventName = "Máquina C recibe token";
+                    table1.setValueAt("Máquina C", 0, 2);
                     break;
                 case 7:
                     newEvent.tplama();
@@ -461,10 +476,10 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     break;
             }
             
-            finalSeconds = System.currentTimeMillis();
-            System.out.println("segundos finales "+finalSeconds);
-            totalSeconds += (initialSeconds + finalSeconds);
-            System.out.println("nuevo total "+totalSeconds);
+            finalSeconds = calendar.get(Calendar.SECOND) + 0.002;
+            //System.out.println("segundos finales "+finalSeconds);
+            totalSeconds += (finalSeconds - initialSeconds);
+            //System.out.println("nuevo total "+totalSeconds);
             
             longitudcolaprioridad1a.setText(""+newEvent.priorityFileA1.size());
             longitudcolaprioridad2a.setText(""+newEvent.priorityFileA2.size());
@@ -479,9 +494,9 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             //table1.setValueAt(newEvent., 0, 3);
             
             if(newEvent.transmisionLine1 && newEvent.transmisionLine2){         // dos lineas libres
-                table2.setValueAt(2, 0, 0);                
+                table2.setValueAt(0, 0, 0);                
             }else{
-                if(newEvent.transmisionLine1 && newEvent.transmisionLine2){     // una linea libre
+                if(newEvent.transmisionLine1 || newEvent.transmisionLine2){     // una linea libre
                     table2.setValueAt(1,0,0);
                 }else{
                     table2.setValueAt(0,0,0);                                   // ninguna linea libre
@@ -489,7 +504,17 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             }
             
             table2.setValueAt(eventName, 0, 1);
+            
+            try{                                                                // Se esperan un tiempo para refrescar la interfaz
+                
+                TimeUnit.MILLISECONDS.sleep(sleep);                
+                
+            }catch(InterruptedException e){
+                
+            }
+            
         }
+        //progressBar.
         ++counter;
         System.out.println("sali de ciclo");
     }
@@ -561,7 +586,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -575,6 +599,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     public javax.swing.JLabel longitudcolaprioridad2b;
     public javax.swing.JLabel longitudcolaprioridad2c;
     public javax.swing.JLabel longitudcolaprioridad3;
+    public javax.swing.JProgressBar progressBar;
     public javax.swing.JTable table1;
     public javax.swing.JTable table2;
     private javax.swing.JTextField tiempoTtxt;
