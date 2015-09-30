@@ -382,7 +382,8 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     while (counter < correrSimulacion){
         totalSeconds = 0;        
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
-        
+        newEvent.setEventTime();     
+                    
         while(totalSeconds <= corridaPorSimulacion){
             
             System.out.println("Reloj "+newEvent.clock);
@@ -390,25 +391,25 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             //System.out.println("cantidad de segundos: "+totalSeconds);
             initialSeconds = calendar.get(Calendar.SECOND);    
             //System.out.println("segundos iniciales: "+initialSeconds);
-            newEvent.setEventTime();                                            // Arranca la simulacion
+                                       // Arranca la simulacion
             
             System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
             
             peekMethod = newEvent.events.peek().numEvent;
             
-            /**System.out.println("Evento 0: "+newEvent.events.peek().nombre);
-            System.out.println("Evento 0: "+newEvent.events.peek().time);
-            newEvent.events.poll();
+            /*System.out.println("Evento 0: "+newEvent.events.peek().nombre);
+            System.out.println("Evento 0: "+newEvent.events.poll().time);
+            //newEvent.events.poll();
             System.out.println("Evento 1: "+newEvent.events.peek().nombre);
-            System.out.println("Evento 1: "+newEvent.events.peek().time);
-            newEvent.events.poll();
+            System.out.println("Evento 1: "+newEvent.events.poll().time);
+            //newEvent.events.poll();
             System.out.println("Evento 2: "+newEvent.events.peek().nombre);
-            System.out.println("Evento 2: "+newEvent.events.peek().time);
-            newEvent.events.poll();
+            System.out.println("Evento 2: "+newEvent.events.poll().time);
+            //newEvent.events.poll();
             System.out.println("Evento 3: "+newEvent.events.peek().nombre);
-            System.out.println("Evento 3: "+newEvent.events.peek().time);
-            newEvent.events.poll();**/
+            System.out.println("Evento 3: "+newEvent.events.poll().time);
+            //newEvent.events.poll();*/
             
             switch(peekMethod){
                 case 1:

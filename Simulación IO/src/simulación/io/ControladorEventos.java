@@ -205,7 +205,7 @@ public class ControladorEventos {
         maqA.numEvent = 1;
         maqA.time = timeFileA();
         maqA.nombre= "Llega archivo a A";
-        temp =maqA.getTime();
+        temp = maqA.getTime();
         
         maqB.numEvent = 2;
         maqB.time = timeFileB();
@@ -227,27 +227,34 @@ public class ControladorEventos {
         events.add(maqC);
         
         double rand = Math.random()*100;
+        System.out.println("Intervalo generado: " + rand);
         if(rand > 0 && rand < 32){
             Event rcvTkA = new Event();
             rcvTkA.nombre = "Recibe token A";
-            rcvTkA.time = temp + 0.01; 
+            rcvTkA.time = temp + 1; 
             rcvTkA.numEvent = 4;
             events.add(rcvTkA);
+                    System.out.println(rcvTkA.nombre);
+                     System.out.println(rcvTkA.time);
         }
         else{
             if(rand > 33 && rand < 65){
                 Event rcvTkB = new Event();
                 rcvTkB.nombre = "Recibe token B";
-                rcvTkB.time = temp + 0.01; 
+                rcvTkB.time = temp + 1; 
                 rcvTkB.numEvent = 5;
                 events.add(rcvTkB);
+                      System.out.println(rcvTkB.nombre);
+                     System.out.println(rcvTkB.time);
             }
             else{
                 Event rcvTkC = new Event();
                 rcvTkC.nombre = "Recibe token C";
-                rcvTkC.time = temp + 0.01; 
+                rcvTkC.time = temp + 1; 
                 rcvTkC.numEvent = 6;
                 events.add(rcvTkC);
+                    System.out.println(rcvTkC.nombre);
+                     System.out.println(rcvTkC.time);
             }
         }
     }
@@ -262,7 +269,7 @@ public class ControladorEventos {
     } 
     
     public double timeFileB(){
-        return (Math.sqrt( 80 * (Math.random() + 64) ) + clock);//(randomWithRange(8, 12)/40);
+        return (randomWithRange(8, 12)/40) + clock ;//(Math.sqrt( 80 * (Math.random() + 64) ) + clock);//(randomWithRange(8, 12)/40);
     }  
     
     public double timeFileC(){
@@ -330,7 +337,6 @@ public class ControladorEventos {
     
     public void fileArrivesC(){
         Event maqC = events.poll();
-        maqC.numEvent = 3;
         clock = maqC.getTime();
         File C = new File();
         
@@ -358,10 +364,10 @@ public class ControladorEventos {
         boolean availableSend = false;
         int i = 0;
         
-        int queueSize = 0;
+        int queueSize;
         queueSize = priorityFileA1.size() + priorityFileA2.size();      //guarda el tamano de la cola 
         queueSizeA.add(queueSize);
-        
+
         while(!availableSend && i < priorityFileA1.size()){                     // Verifica si existe un archivo en la cola de prioridad 1 que se
             if( (priorityFileA1.get(i).size * 1/2) <= tokenTime ){              // pueda enviar en el tiempoToken
                 availableSend = true;
@@ -438,18 +444,21 @@ public class ControladorEventos {
     public void receivesTokenB(){
         Event recB = events.poll();
         clock = recB.getTime();
-        recB.numEvent = 5;
         setTokenTime();
         filesSend = 0;
         boolean availableSend = false;
         int i = 0;
         
-        int queueSize = 0;
+        int queueSize;
         queueSize = priorityFileB1.size() + priorityFileB2.size();
         queueSizeB.add(queueSize);
-        
-        while(!availableSend && i < priorityFileB1.size()){
+
+        while(!availableSend && i < priorityFileB1.size()){     //itera sobre la cola 1 de archivos para ver si puede mandar alguno 
+                    System.out.println("Estoy en el while ");
+                    System.out.println("tamano de archivo " + priorityFileB1.get(i).size);
+                     System.out.println("token: " + tokenTime);
             if( (priorityFileB1.get(i).size * 1/2) <= tokenTime ){
+                            System.out.println("mando prioridad 1");
                 availableSend = true;
             }else{
                 ++i;
@@ -479,6 +488,7 @@ public class ControladorEventos {
             int j = 0;
             while(!availableSend && j < priorityFileB2.size()){
                 if( (priorityFileB2.get(j).size * 1/2) <= tokenTime ){
+                                                System.out.println("mando prioridad 2");
                     availableSend = true;
                 }else{
                     ++j;
@@ -525,7 +535,7 @@ public class ControladorEventos {
         boolean availableSend = false;
         int i = 0;
         
-        int queueSize = 0;
+        int queueSize;
         queueSize = priorityFileC1.size() + priorityFileC2.size();
         queueSizeC.add(queueSize);
         
