@@ -3,7 +3,7 @@
  */
 package simulación.io;
 
-import java.util.Calendar;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
+import java.lang.System;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
 
 /**
  *
@@ -198,11 +198,8 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                         .addComponent(jToggleButton2)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
@@ -210,7 +207,9 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                                     .addComponent(jRadioButton2))
                                 .addGap(62, 62, 62))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -369,36 +368,51 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     tiempoT = Double.parseDouble(tiempoTtxt.getText());
     
     int counter = 0;
-    int totalSeconds = 0;
-    int initialSeconds = 0;
-    int finalSeconds = 0;
+    long totalSeconds = 0;
+    long initialSeconds = 0;
+    long finalSeconds = 0;
     int peekMethod;
     String eventName = "";
-    Calendar calendar = Calendar.getInstance();
+    //Calendar calendar = Calendar.getInstance();
+    
     
     while (counter <= correrSimulacion){
         totalSeconds = 0;        
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
         
         while(totalSeconds <= corridaPorSimulacion){
-            initialSeconds = calendar.get(Calendar.SECOND);    
-            
+            System.out.println("Estoy en ciclo");
+            System.out.println("cantidad de segundos: "+totalSeconds);
+            initialSeconds = System.currentTimeMillis();//calendar.get(Calendar.SECOND);    
+            System.out.println("segundos iniciales: "+initialSeconds);
             newEvent.setEventTime();                                            // Arranca la simulacion
+            
+            System.out.println("tiempo 1:"+newEvent.events.peek().nombre);
+            System.out.println("tiempo 1:"+newEvent.events.peek().time);
             
             peekMethod = newEvent.events.peek().numEvent;
             
             switch(peekMethod){
                 case 1:
+                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.FileArrivesA();
                     eventName = "Máquina A recibe archivo";
+                    System.out.println("primero");
                     break;
                 case 2:
+                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesB();
                     eventName = "Máquina B recibe archivo";
+                    System.out.println("segundo");
                     break;                
                 case 3:
+                    System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
+                    System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesC();
                     eventName = "Máquina C recibe archivo";
+                    System.out.println("tercero");
                     break;
                 case 4:
                     newEvent.receivesTokenA();
@@ -445,8 +459,11 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     eventName = "Sale por linea 2 de router";
                     break;
             }
-            finalSeconds = calendar.get(Calendar.SECOND);    
-            totalSeconds += finalSeconds - initialSeconds;    
+            
+            finalSeconds = System.currentTimeMillis();
+            System.out.println("segundos finales "+finalSeconds);
+            totalSeconds += ( (initialSeconds / 1000) + (finalSeconds / 1000) );
+            System.out.println("nuevo total "+totalSeconds);
             
             longitudcolaprioridad1a.setText(""+newEvent.priorityFileA1.size());
             longitudcolaprioridad2a.setText(""+newEvent.priorityFileA2.size());
@@ -473,6 +490,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             table2.setValueAt(eventName, 0, 1);
         }
         ++counter;
+        System.out.println("sali de ciclo");
     }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 

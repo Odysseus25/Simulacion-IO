@@ -54,7 +54,7 @@ public class ControladorEventos {
         
         double systemTime;
         int priority;
-        int size;
+        double size;
     }
     
     static class Statistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
@@ -283,7 +283,7 @@ public class ControladorEventos {
     }
     
     //define el tamano de cada archivo
-    public int fileSize(){
+    public double fileSize(){
      return randomWithRange(1, 64);   
     }
     
@@ -847,7 +847,7 @@ public class ControladorEventos {
             serverFiles.remove(0);
             antivirusAvailable = false;
 
-            int quantityVirus = randomWithRange(0,3); 
+            double quantityVirus = randomWithRange(0,3); 
             
             if(quantityVirus == 0){
                 Event sla = new Event();
@@ -921,7 +921,7 @@ public class ControladorEventos {
         if(serverFiles.isEmpty() && serverFiles.isEmpty()){
             antivirusAvailable = false;
             File temp = serverFiles.get(0);            
-            int quantityVirus = randomWithRange(0,3);
+            double quantityVirus = randomWithRange(0,3);
             
             if(quantityVirus == 0){                
                 sla.numEvent = 11;
