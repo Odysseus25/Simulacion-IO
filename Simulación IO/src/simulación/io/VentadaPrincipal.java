@@ -368,10 +368,11 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     tiempoT = Double.parseDouble(tiempoTtxt.getText());
     
     int counter = 0;
-    long totalSeconds = 0;
-    long initialSeconds = 0;
-    long finalSeconds = 0;
+    double totalSeconds = 0;
+    double initialSeconds = 0;
+    double finalSeconds = 0;
     int peekMethod;
+    //long prueba = 1000000000;
     String eventName = "";
     //Calendar calendar = Calendar.getInstance();
     
@@ -462,7 +463,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             
             finalSeconds = System.currentTimeMillis();
             System.out.println("segundos finales "+finalSeconds);
-            totalSeconds += ( (initialSeconds / 1000) + (finalSeconds / 1000) );
+            totalSeconds += (initialSeconds + finalSeconds);
             System.out.println("nuevo total "+totalSeconds);
             
             longitudcolaprioridad1a.setText(""+newEvent.priorityFileA1.size());
