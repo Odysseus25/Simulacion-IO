@@ -628,13 +628,17 @@ public class ControladorEventos {
         tplama.numEvent = 7;
         clock = tplama.getTime();
         
-        if(tokenTime == 0){
+        System.out.println("Tiempo de token: "+tokenTime);
+        
+        if(tokenTime <= 0){
             tplama.time = 1000000;
+            System.out.println("Entra aqui ****************************************************************************************************");
             //almacenar cantidad de archivos enviados
             Event recB = new Event();
             recB.numEvent = 5;
             recB.time = clock;     
             recB.nombre = "Recibe Token Maquina B";
+            events.add(recB);
         }else{
             boolean availableSend = false;
             int i = 0;
@@ -716,14 +720,16 @@ public class ControladorEventos {
         Event tplamb = events.poll();
         tplamb.numEvent = 8;
         clock = tplamb.getTime();
-        
-        if(tokenTime == 0){
+        System.out.println("Tiempo de token: "+tokenTime);
+        if(tokenTime <= 0){
             tplamb.time = 1000000;
             //almacenar cantidad de archivos enviados
+            System.out.println("Entra aqui ****************************************************************************************************");
             Event recC = new Event();
             recC.numEvent = 6;
             recC.time = clock;       
             recC.nombre = "Recibe Token Maquina C";
+            events.add(recC);
         }else{
             boolean availableSend = false;
             int i = 0;
@@ -805,14 +811,16 @@ public class ControladorEventos {
         Event tplamc = events.poll();
         tplamc.numEvent = 9;
         clock = tplamc.getTime();
-        
-        if(tokenTime == 0){
+        System.out.println("Tiempo de token: "+tokenTime);
+        if(tokenTime <= 0){
             tplamc.time = 1000000;
             //almacenar cantidad de archivos enviados
+            System.out.println("Entra aqui ****************************************************************************************************");
             Event recA = new Event();
             recA.numEvent = 4;
             recA.time = clock;   
             recA.nombre = "Recibe token maquina A";
+            events.add(recA);
         }else{
             boolean availableSend = false;
             int i = 0;
