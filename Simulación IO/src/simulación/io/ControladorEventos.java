@@ -122,6 +122,7 @@ public class ControladorEventos {
                     break;
             }
         }
+    }
     
     
     //clase que compara el tiempo de reloj de los eventos para ordenarlos
@@ -836,12 +837,13 @@ public class ControladorEventos {
         lasa.numEvent = 10;
         clock = lasa.getTime();
         queueSizeB.add(serverFiles.size());     //guarda el tamano de la cola 
+        int passes = 0;     //cantidad de veces que revisa un archivo por virus
         
         if(antivirusAvailable && serverFiles.isEmpty()){
             File temp = serverFiles.get(0);
             serverFiles.remove(0);
             antivirusAvailable = false;
-            int check = 0;     //cantidad de veces que revisa un archivo por virus
+
             int quantityVirus = randomWithRange(0,3); 
             
             if(quantityVirus == 0){
@@ -857,7 +859,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (temp.size / 8);
                 events.add(laar);
-                check++;
+                passes++;
                 // almacenar revisiones
             }
             if(quantityVirus == 1){
@@ -873,7 +875,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (3 * temp.size / 16);
                 events.add(laar);
-                check++;
+                passes++;
             }
             if(quantityVirus == 2){
                 Event sla = new Event();
@@ -888,7 +890,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (11 * temp.size / 48);
                 events.add(laar);
-                check++;
+                passes++;
             }
             if(quantityVirus == 3){
                 Event sla = new Event();
@@ -898,13 +900,13 @@ public class ControladorEventos {
                 
                 lasa.time = 1000000;
                 events.add(lasa);                
-                check++;
+                passes++;
             }
         }else{
             lasa.time = 1000000;
             events.add(lasa);
         }
-        virusCheck.add(check);
+        virusCheck.add(passes);
     }
     
     public void sla(){                                                          // Se libera el antivirus
