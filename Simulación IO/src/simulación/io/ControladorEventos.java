@@ -187,9 +187,9 @@ public class ControladorEventos {
     }
     
     //genera randoms en un intervalo
-    public int randomWithRange(int min, int max){
+    public double randomWithRange(int min, int max){
         int range = (max - min) + 1;
-        return (int)(Math.random()*range) + min;
+        return (Math.random()*range) + min;
     }
     
     //inicializa los eventos en tiempo cero. 
@@ -231,6 +231,7 @@ public class ControladorEventos {
             Event rcvTkA = new Event();
             rcvTkA.nombre = "Recibe token A";
             rcvTkA.time = temp + 3; 
+            rcvTkA.numEvent = 4;
             events.add(rcvTkA);
         }
         else{
@@ -238,12 +239,14 @@ public class ControladorEventos {
                 Event rcvTkB = new Event();
                 rcvTkB.nombre = "Recibe token B";
                 rcvTkB.time = temp + 3; 
+                rcvTkB.numEvent = 5;
                 events.add(rcvTkB);
             }
             else{
                 Event rcvTkC = new Event();
                 rcvTkC.nombre = "Recibe token C";
                 rcvTkC.time = temp + 3; 
+                rcvTkC.numEvent = 6;
                 events.add(rcvTkC);
             }
         }
@@ -259,7 +262,7 @@ public class ControladorEventos {
     }
     
     public double timeFileB(){
-        return randomWithRange(8, 12)/40;
+        return (randomWithRange(8, 12)/40);
     }  
     
     public double timeFileC(){
@@ -346,7 +349,7 @@ public class ControladorEventos {
     public void receivesTokenA(){
         Event recA = events.poll();                                             // Copia del evento actual
         clock = recA.getTime();
-        recA.numEvent = 1;
+       // recA.numEvent = 4;
         setTokenTime();
         filesSend = 0;
         boolean availableSend = false;
@@ -418,7 +421,7 @@ public class ControladorEventos {
                 events.add(recA);
                 
                 Event recB = new Event();
-                recB.numEvent = 2;
+                recB.numEvent = 5;
                 recB.time = clock;
                 events.add(recB);
                 
@@ -432,7 +435,7 @@ public class ControladorEventos {
     public void receivesTokenB(){
         Event recB = events.poll();
         clock = recB.getTime();
-        recB.numEvent = 5;
+        //recB.numEvent = 5;
         setTokenTime();
         filesSend = 0;
         boolean availableSend = false;
@@ -583,7 +586,7 @@ public class ControladorEventos {
                 events.add(recC);
                 
                 Event recA = new Event();
-                recA.numEvent = 6;
+                recA.numEvent = 4;
                 recA.time = clock;
                 events.add(recA);
             }
