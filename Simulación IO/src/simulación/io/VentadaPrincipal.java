@@ -3,6 +3,8 @@
  */
 package simulación.io;
 
+import java.util.Calendar;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
+
 /**
  *
  * @author 
@@ -14,6 +16,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     double tiempoT;
     boolean modoLento = false;
     boolean modoRapido = false;
+    
     
     
     public VentadaPrincipal() {
@@ -30,9 +33,9 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        longitudcolaprioridad3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -46,27 +49,28 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         corridaPorSimulaciontxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaDatosActuales = new javax.swing.JTable();
+        table1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table2 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jToggleButton2 = new javax.swing.JToggleButton();
+        longitudcolaprioridad1a = new javax.swing.JLabel();
+        longitudcolaprioridad2a = new javax.swing.JLabel();
+        longitudcolamaquinas = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        longitudcolaprioridad1b = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        longitudcolaprioridad2b = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        longitudcolaprioridad1c = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        longitudcolaprioridad2c = new javax.swing.JLabel();
+
+        longitudcolaprioridad3.setText("0");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jToggleButton1.setLabel("Salir");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Tunga", 1, 24)); // NOI18N
         jLabel1.setText("Simulación Red LAN ");
@@ -111,7 +115,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
 
         jLabel5.setText("segundos");
 
-        TablaDatosActuales.setModel(new javax.swing.table.DefaultTableModel(
+        table1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null}
             },
@@ -122,21 +126,14 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Double.class, java.lang.Integer.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
-        jScrollPane1.setViewportView(TablaDatosActuales);
+        jScrollPane1.setViewportView(table1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null}
             },
@@ -152,15 +149,13 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(table2);
 
-        jLabel8.setText("Longitud Cola Prioridad 1:");
+        jLabel8.setText("Longitud Cola Prioridad 1 Máquina A:");
 
-        jLabel9.setText("Longitud Cola Prioridad 2:");
+        jLabel9.setText("Longitud Cola Prioridad 2 Máquina A:");
 
-        jLabel10.setText("Longitud Cola Máquinas - Antivirus: ");
-
-        jLabel11.setText("Longitud Cola Interna de Antivirus:");
+        jLabel10.setText("Longitud Cola en Antivirus: ");
 
         jToggleButton2.setText("Ejecutar");
         jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -169,13 +164,27 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setText("0");
+        longitudcolaprioridad1a.setText("0");
 
-        jLabel13.setText("0");
+        longitudcolaprioridad2a.setText("0");
 
-        jLabel14.setText("0");
+        longitudcolamaquinas.setText("0");
 
-        jLabel15.setText("0");
+        jLabel12.setText("Longitud Cola Prioridad 1 Máquina B:");
+
+        longitudcolaprioridad1b.setText("0");
+
+        jLabel14.setText("Longitud Cola Prioridad 2 Máquina B:");
+
+        longitudcolaprioridad2b.setText("0");
+
+        jLabel16.setText("Longitud Cola Prioridad 1 Máquina C:");
+
+        longitudcolaprioridad1c.setText("0");
+
+        jLabel18.setText("Longitud Cola Prioridad 2 Máquina C:");
+
+        longitudcolaprioridad2c.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -184,6 +193,10 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jToggleButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -214,29 +227,36 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                                 .addComponent(jLabel7)))
                         .addGap(78, 78, 78)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(18, 18, 18)
+                                .addComponent(longitudcolaprioridad1c, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                                .addComponent(longitudcolaprioridad1a, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jToggleButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(longitudcolamaquinas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel12))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(longitudcolaprioridad2a, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(longitudcolaprioridad1b, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(18, 18, 18)
+                                .addComponent(longitudcolaprioridad2b, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addGap(18, 18, 18)
+                                .addComponent(longitudcolaprioridad2c, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -262,19 +282,19 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel12))
+                            .addComponent(longitudcolaprioridad1a))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel13))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel14))
+                            .addComponent(longitudcolaprioridad2a))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel15)))
+                            .addComponent(jLabel12)
+                            .addComponent(longitudcolaprioridad1b))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(longitudcolaprioridad2b)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -288,22 +308,30 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                             .addComponent(tiempoTtxt, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)
                             .addComponent(jLabel6))))
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(longitudcolaprioridad1c))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(longitudcolaprioridad2c))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(longitudcolamaquinas))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
-                        .addComponent(jRadioButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButton2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton2))
-                .addGap(18, 18, 18))
+                .addGap(18, 18, 18)
+                .addComponent(jToggleButton2)
+                .addGap(57, 57, 57))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -318,18 +346,13 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
-                
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         
@@ -344,8 +367,113 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     correrSimulacion = Integer.parseInt(correrSimulaciontxt.getText());
     corridaPorSimulacion = Double.parseDouble(corridaPorSimulaciontxt.getText());
     tiempoT = Double.parseDouble(tiempoTtxt.getText());
+    
+    int counter = 0;
+    int totalSeconds = 0;
+    int initialSeconds = 0;
+    int finalSeconds = 0;
+    int peekMethod;
+    String eventName = "";
+    Calendar calendar = Calendar.getInstance();
+    
+    while (counter <= correrSimulacion){
+        totalSeconds = 0;        
+        ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
         
-        
+        while(totalSeconds <= corridaPorSimulacion){
+            initialSeconds = calendar.get(Calendar.SECOND);    
+            
+            newEvent.setEventTime();                                            // Arranca la simulacion
+            
+            peekMethod = newEvent.events.peek().numEvent;
+            
+            switch(peekMethod){
+                case 1:
+                    newEvent.FileArrivesA();
+                    eventName = "Máquina A recibe archivo";
+                    break;
+                case 2:
+                    newEvent.fileArrivesB();
+                    eventName = "Máquina B recibe archivo";
+                    break;                
+                case 3:
+                    newEvent.fileArrivesC();
+                    eventName = "Máquina C recibe archivo";
+                    break;
+                case 4:
+                    newEvent.receivesTokenA();
+                    eventName = "Máquina A recibe token";
+                    break;
+                case 5:
+                    newEvent.receivesTokenB();
+                    eventName = "Máquina B recibe token";
+                    break;
+                case 6:
+                    newEvent.receivesTokenC();
+                    eventName = "Máquina C recibe token";
+                    break;
+                case 7:
+                    newEvent.tplama();
+                    eventName = "Archivo en linea A";
+                    break;
+                case 8:
+                    newEvent.tplamb();
+                    eventName = "Archivo en linea B";
+                    break;
+                case 9:
+                    newEvent.tplamc();
+                    eventName = "Archivo en linea C";
+                    break;
+                case 10:
+                    newEvent.lasa();
+                    eventName = "Archivo llega al servidor";
+                    break;
+                case 11:
+                    newEvent.sla();
+                    eventName = "Archivo sale de servidor";
+                    break;
+                case 12:
+                    newEvent.laar();
+                    eventName = "Archivo llega a router";
+                    break;
+                case 13:
+                    newEvent.srlt1();
+                    eventName = "Sale por linea 1 de router";
+                    break;
+                case 14:
+                    newEvent.srlt2();
+                    eventName = "Sale por linea 2 de router";
+                    break;
+            }
+            finalSeconds = calendar.get(Calendar.SECOND);    
+            totalSeconds += finalSeconds - initialSeconds;    
+            
+            longitudcolaprioridad1a.setText(""+newEvent.priorityFileA1.size());
+            longitudcolaprioridad2a.setText(""+newEvent.priorityFileA2.size());
+            longitudcolaprioridad1b.setText(""+newEvent.priorityFileB1.size());
+            longitudcolaprioridad2b.setText(""+newEvent.priorityFileB2.size());
+            longitudcolaprioridad1c.setText(""+newEvent.priorityFileC1.size());
+            longitudcolaprioridad2c.setText(""+newEvent.priorityFileC2.size());
+            longitudcolamaquinas.setText(""+newEvent.serverFiles.size());
+            
+            table1.setValueAt(newEvent.clock, 0, 0);
+            table1.setValueAt(newEvent.tokenTime, 0, 1);
+            //table1.setValueAt(newEvent., 0, 3);
+            
+            if(newEvent.transmisionLine1 && newEvent.transmisionLine2){         // dos lineas libres
+                table2.setValueAt(2, 0, 0);                
+            }else{
+                if(newEvent.transmisionLine1 && newEvent.transmisionLine2){     // una linea libre
+                    table2.setValueAt(1,0,0);
+                }else{
+                    table2.setValueAt(0,0,0);                                   // ninguna linea libre
+                }
+            }
+            
+            table2.setValueAt(eventName, 0, 1);
+        }
+        ++counter;
+    }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void tiempoTtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiempoTtxtActionPerformed
@@ -358,7 +486,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         
         modoRapido = true;
         modoLento = false;
-        
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     /**
@@ -397,17 +524,15 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TablaDatosActuales;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField correrSimulaciontxt;
     private javax.swing.JTextField corridaPorSimulaciontxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -422,9 +547,17 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
+    public javax.swing.JLabel longitudcolamaquinas;
+    public javax.swing.JLabel longitudcolaprioridad1a;
+    public javax.swing.JLabel longitudcolaprioridad1b;
+    public javax.swing.JLabel longitudcolaprioridad1c;
+    public javax.swing.JLabel longitudcolaprioridad2a;
+    public javax.swing.JLabel longitudcolaprioridad2b;
+    public javax.swing.JLabel longitudcolaprioridad2c;
+    public javax.swing.JLabel longitudcolaprioridad3;
+    public javax.swing.JTable table1;
+    public javax.swing.JTable table2;
     private javax.swing.JTextField tiempoTtxt;
     // End of variables declaration//GEN-END:variables
 }

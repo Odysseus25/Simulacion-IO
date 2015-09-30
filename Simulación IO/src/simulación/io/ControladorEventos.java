@@ -845,6 +845,7 @@ public class ControladorEventos {
             int quantityVirus = randomWithRange(0,3); 
             
             if(quantityVirus == 0){
+                routerFiles.add(temp);
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (temp.size / 8);
@@ -861,6 +862,7 @@ public class ControladorEventos {
                 // almacenar revisiones
             }
             if(quantityVirus == 1){
+                routerFiles.add(temp);
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (3 * temp.size / 16);
@@ -876,6 +878,7 @@ public class ControladorEventos {
                 check++;
             }
             if(quantityVirus == 2){
+                routerFiles.add(temp);
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
@@ -978,7 +981,6 @@ public class ControladorEventos {
             transmisionLine1 = false;
             
             File temp = routerFiles.get(0);
-            routerFiles.remove(0);
             
             Event srlt1 = new Event();
             srlt1.numEvent = 13;
