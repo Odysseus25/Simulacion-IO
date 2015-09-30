@@ -381,12 +381,14 @@ public class ControladorEventos {
             Event LASA = new Event();                                           // Nuevo evento para este unico archivo
             LASA.numEvent = 10;
             LASA.time = clock + (A.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+            LASA.nombre = "Llega archivo a antivirus";
             events.add(LASA);
             serverFiles.add(A);                                                 // Se agrega a la cola del servidor de antivirus
             
             Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
             TPLAMA.numEvent = 7;
             TPLAMA.time = clock + (A.size * 1/2);
+            TPLAMA.nombre = "Termina poner en linea maq A";
             events.add(TPLAMA);
             tokenTime -= (A.size * 1/2);
             ++filesSend;
@@ -411,12 +413,14 @@ public class ControladorEventos {
                 Event LASA = new Event();
                 LASA.numEvent = 10;
                 LASA.time = clock + ( A.size * 1/2 ) + 1/4;
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(A);
                 
                 Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
                 TPLAMA.numEvent = 7;
                 TPLAMA.time = clock + (A.size * 1/2);
+                TPLAMA.nombre = "Termina poner en linea maq A";
                 events.add(TPLAMA);
                 tokenTime -= (A.size * 1/2);
                 ++filesSend;
@@ -430,6 +434,7 @@ public class ControladorEventos {
                 Event recB = new Event();
                 recB.numEvent = 5;
                 recB.time = clock;
+                recB.nombre = "Recibe Token Maquina B";
                 events.add(recB);
                 
                 // guardar la cantidad de archivos enviados
@@ -468,14 +473,18 @@ public class ControladorEventos {
             priorityFileB1.remove(i);
             
             Event LASA = new Event();                                           // Nuevo evento para este unico archivo
+                            System.out.println("LASA PUESTO EN COLA-----------------------------");
             LASA.numEvent = 10;
             LASA.time = clock + (B.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                                        System.out.println("LASA TIME: " + LASA.getTime());
+            LASA.nombre = "Llega archivo a antivirus";
             events.add(LASA);
             serverFiles.add(B); 
             
             Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina B
             TPLAMB.numEvent = 8;
             TPLAMB.time = clock + (B.size * 1/2);
+            TPLAMB.nombre = "Termina poner en linea maq B";
             events.add(TPLAMB);
             tokenTime -= (B.size * 1/2);
             ++filesSend;
@@ -499,12 +508,14 @@ public class ControladorEventos {
                 Event LASA = new Event();                                           // Nuevo evento para este unico archivo
                 LASA.numEvent = 10;
                 LASA.time = clock + (B.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(B); 
 
                 Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina B
                 TPLAMB.numEvent = 8;
                 TPLAMB.time = clock + (B.size * 1/2);
+                TPLAMB.nombre = "Termina poner en linea maq B";
                 events.add(TPLAMB);
                 tokenTime -= (B.size * 1/2);
                 ++filesSend;
@@ -518,6 +529,7 @@ public class ControladorEventos {
                 Event recC = new Event();
                 recC.numEvent = 6;
                 recC.time = clock;
+                recC.nombre = "Recibe Token Maquina C";
                 events.add(recC);
             }
         }
@@ -552,12 +564,14 @@ public class ControladorEventos {
             Event LASA = new Event();                                           // Nuevo evento para este unico archivo
             LASA.numEvent = 10;
             LASA.time = clock + (C.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+            LASA.nombre = "Llega archivo a antivirus";
             events.add(LASA);
             serverFiles.add(C); 
             
             Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina C
             TPLAMC.numEvent = 9;
             TPLAMC.time = clock + (C.size * 1/2);
+            TPLAMC.nombre = "Termina poner en linea maq C";
             events.add(TPLAMC);
             tokenTime -= (C.size * 1/2);
             ++filesSend;
@@ -580,12 +594,15 @@ public class ControladorEventos {
                 Event LASA = new Event();                                           // Nuevo evento para este unico archivo
                 LASA.numEvent = 10;
                 LASA.time = clock + (C.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(C); 
 
                 Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina C
                 TPLAMC.numEvent = 9;
                 TPLAMC.time = clock + (C.size * 1/2);
+                TPLAMC.nombre = "Termina poner en linea maq C";
+
                 events.add(TPLAMC);
                 tokenTime -= (C.size * 1/2);
                 ++filesSend;
@@ -599,6 +616,7 @@ public class ControladorEventos {
                 Event recA = new Event();
                 recA.numEvent = 4;
                 recA.time = clock;
+                recA.nombre = "Recibe Token Maquina A";
                 events.add(recA);
             }
         }
@@ -615,7 +633,8 @@ public class ControladorEventos {
             //almacenar cantidad de archivos enviados
             Event recB = new Event();
             recB.numEvent = 5;
-            recB.time = clock;            
+            recB.time = clock;     
+            recB.nombre = "Recibe Token Maquina B";
         }else{
             boolean availableSend = false;
             int i = 0;
@@ -634,12 +653,15 @@ public class ControladorEventos {
                 Event LASA = new Event();                                           // Nuevo evento para este unico archivo
                 LASA.numEvent = 10;
                 LASA.time = clock + (A.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(A);                                                 // Se agrega a la cola del servidor de antivirus
 
                 Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
                 TPLAMA.numEvent = 7;
                 TPLAMA.time = clock + (A.size * 1/2);
+                TPLAMA.nombre = "Termina poner en linea maq A";
+
                 events.add(TPLAMA);
                 tokenTime -= (A.size * 1/2);
                 ++filesSend;
@@ -660,12 +682,15 @@ public class ControladorEventos {
                     Event LASA = new Event();
                     LASA.numEvent = 10;
                     LASA.time = clock + ( A.size * 1/2 ) + 1/4;
+                    LASA.nombre = "Llega archivo a antivirus";
                     events.add(LASA);
                     serverFiles.add(A);
 
                     Event TPLAMA = new Event();                                         // Evento termina poner en linea archivo maquina A
                     TPLAMA.numEvent = 7;
                     TPLAMA.time = clock + (A.size * 1/2);
+                    TPLAMA.nombre = "Termina poner en linea maq A";
+
                     events.add(TPLAMA);
                     tokenTime -= (A.size * 1/2);
                     ++filesSend;
@@ -677,6 +702,7 @@ public class ControladorEventos {
                     Event recB = new Event();
                     recB.numEvent = 2;
                     recB.time = clock;
+                    recB.nombre = "Recibe Token Maquina B";
                     events.add(recB);
 
                     // guardar la cantidad de archivos enviados                        
@@ -696,7 +722,8 @@ public class ControladorEventos {
             //almacenar cantidad de archivos enviados
             Event recC = new Event();
             recC.numEvent = 6;
-            recC.time = clock;            
+            recC.time = clock;       
+            recC.nombre = "Recibe Token Maquina C";
         }else{
             boolean availableSend = false;
             int i = 0;
@@ -715,12 +742,15 @@ public class ControladorEventos {
                 Event LASA = new Event();                                           // Nuevo evento para este unico archivo
                 LASA.numEvent = 10;
                 LASA.time = clock + (B.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(B);                                                 // Se agrega a la cola del servidor de antivirus
 
                 Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina A
                 TPLAMB.numEvent = 8;
                 TPLAMB.time = clock + (B.size * 1/2);
+                TPLAMB.nombre = "Termina poner en linea maq B";
+
                 events.add(TPLAMB);
                 tokenTime -= (B.size * 1/2);
                 ++filesSend;
@@ -741,12 +771,15 @@ public class ControladorEventos {
                     Event LASA = new Event();
                     LASA.numEvent = 10;
                     LASA.time = clock + ( B.size * 1/2 ) + 1/4;
+                    LASA.nombre = "Llega archivo a antivirus";
                     events.add(LASA);
                     serverFiles.add(B);
 
                     Event TPLAMB = new Event();                                         // Evento termina poner en linea archivo maquina A
                     TPLAMB.numEvent = 8;
                     TPLAMB.time = clock + (B.size * 1/2); //////
+                    TPLAMB.nombre = "Termina poner en linea maq B";
+
                     events.add(TPLAMB);
                     tokenTime -= (B.size * 1/2);
                     ++filesSend;
@@ -758,6 +791,7 @@ public class ControladorEventos {
                     Event recC = new Event();
                     recC.numEvent = 6;
                     recC.time = clock;
+                    recC.nombre = "Recibe Token Maquin C";
                     events.add(recC);
 
                     // guardar la cantidad de archivos enviados                        
@@ -777,7 +811,8 @@ public class ControladorEventos {
             //almacenar cantidad de archivos enviados
             Event recA = new Event();
             recA.numEvent = 4;
-            recA.time = clock;            
+            recA.time = clock;   
+            recA.nombre = "Recibe token maquina A";
         }else{
             boolean availableSend = false;
             int i = 0;
@@ -796,12 +831,15 @@ public class ControladorEventos {
                 Event LASA = new Event();                                           // Nuevo evento para este unico archivo
                 LASA.numEvent = 10;
                 LASA.time = clock + (C.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+                LASA.nombre = "Llega archivo a antivirus";
                 events.add(LASA);
                 serverFiles.add(C);                                                 // Se agrega a la cola del servidor de antivirus
 
                 Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina A
                 TPLAMC.numEvent = 9;
                 TPLAMC.time = clock + (C.size * 1/2);
+                TPLAMC.nombre = "Termina poner en linea maq C";
+
                 events.add(TPLAMC);
                 tokenTime -= (C.size * 1/2);
                 ++filesSend;
@@ -822,12 +860,15 @@ public class ControladorEventos {
                     Event LASA = new Event();
                     LASA.numEvent = 10;
                     LASA.time = clock + ( C.size * 1/2 ) + 1/4;
+                    LASA.nombre = "Llega archivo antivirus";
                     events.add(LASA);
                     serverFiles.add(C);
 
                     Event TPLAMC = new Event();                                         // Evento termina poner en linea archivo maquina A
                     TPLAMC.numEvent = 9;
                     TPLAMC.time = clock + (C.size * 1/2); //////
+                    TPLAMC.nombre = "Termina poner en linea maq C";
+
                     events.add(TPLAMC);
                     tokenTime -= (C.size * 1/2);
                     ++filesSend;
@@ -839,6 +880,7 @@ public class ControladorEventos {
                     Event recA = new Event();
                     recA.numEvent = 4;
                     recA.time = clock;
+                    recA.nombre = "Recibe token maquina A";
                     events.add(recA);                     
                 }                
             }
@@ -864,6 +906,7 @@ public class ControladorEventos {
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (temp.size / 8);
+                sla.nombre = "SLA";
                 events.add(sla);
                 
                 lasa.time = 1000000;
@@ -872,6 +915,7 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (temp.size / 8);
+                laar.nombre = "LAAR";
                 events.add(laar);
                 passes++;
                 // almacenar revisiones
@@ -880,6 +924,7 @@ public class ControladorEventos {
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (3 * temp.size / 16);
+                sla.nombre = "SLA";
                 events.add(sla);
                 
                 lasa.time = 1000000;
@@ -888,6 +933,8 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (3 * temp.size / 16);
+                laar.nombre = "LAAR";
+               
                 events.add(laar);
                 passes++;
             }
@@ -895,6 +942,7 @@ public class ControladorEventos {
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
+                sla.nombre = "SLA";
                 events.add(sla);
                 
                 lasa.time = 1000000;
@@ -903,6 +951,7 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (11 * temp.size / 48);
+                laar.nombre = "LAAR";
                 events.add(laar);
                 passes++;
             }
@@ -910,6 +959,7 @@ public class ControladorEventos {
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
+                sla.nombre = "SLA";
                 events.add(sla);
                 
                 lasa.time = 1000000;
@@ -942,6 +992,7 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (temp.size / 8);
+                laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
                 // almacenar revisiones
@@ -955,6 +1006,7 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (3 * temp.size / 16);
+                laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
                 // almacenar revisiones                
@@ -968,6 +1020,7 @@ public class ControladorEventos {
                 Event laar = new Event();
                 laar.numEvent = 12;
                 laar.time = clock + (11 * temp.size / 48);
+                laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
                 // almacenar revisiones
@@ -999,6 +1052,7 @@ public class ControladorEventos {
             Event srlt1 = new Event();
             srlt1.numEvent = 13;
             srlt1.time = temp.size / 64 ;
+            srlt1.nombre = "Sale por linea 1";
             events.add(srlt1);
         }else{
             if(transmisionLine2 && routerFiles.isEmpty()){
@@ -1008,7 +1062,8 @@ public class ControladorEventos {
                 
                 Event srlt2 = new Event();
                 srlt2.numEvent = 14;
-                srlt2.time = temp.size /64 ;               
+                srlt2.time = temp.size /64 ;  
+                srlt2.nombre = "Sale por linea 2";
                 events.add(srlt2);
                 
                 laar.time = 1000000;
