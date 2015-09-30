@@ -265,11 +265,11 @@ public class ControladorEventos {
         while(temp == 1){
             temp = Math.random();
         }
-        return ( (-1*(Math.log(1 - temp)))/4 + clock );
+        return ( (-1*(Math.log(1 - temp)))/4 );
     } 
     
     public double timeFileB(){
-        return (randomWithRange(8, 12)/40) + clock ;//(Math.sqrt( 80 * (Math.random() + 64) ) + clock);//(randomWithRange(8, 12)/40);
+        return (randomWithRange(8, 12)/40);//(Math.sqrt( 80 * (Math.random() + 64) ) + clock);//(randomWithRange(8, 12)/40);
     }  
     
     public double timeFileC(){
@@ -277,7 +277,7 @@ public class ControladorEventos {
         for(int i = 0; i <= 12; i++){
             addedValues += Math.random();
         }
-        return ( 0.1*(addedValues-6)+5 + clock );
+        return ( 0.1*(addedValues-6)+5);
     } 
     
     //define la prioridad del archivo
@@ -297,7 +297,6 @@ public class ControladorEventos {
     
     public void FileArrivesA(){
         Event maqA = events.poll();                 // Se saca el evento de la priority queue        
-        maqA.numEvent = 1;
         clock = maqA.getTime();
         File A = new File();
         
@@ -311,13 +310,12 @@ public class ControladorEventos {
             priorityFileA2.add(A);
         }
         
-        maqA.time = timeFileA();            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
+        maqA.time = timeFileA() + clock;            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
         events.add(maqA);                           // Se vuelve a agregar el evento con nuevos valores
     }
     
     public void fileArrivesB(){
         Event maqB = events.poll();
-        maqB.numEvent = 2;
         clock = maqB.getTime();
         File B = new File();
         
@@ -331,7 +329,7 @@ public class ControladorEventos {
             priorityFileB2.add(B);
         }
         
-        maqB.time = timeFileB();
+        maqB.time = timeFileB()+ clock;
         events.add(maqB);
     }
     
@@ -350,7 +348,7 @@ public class ControladorEventos {
             priorityFileC2.add(C);
         }
         
-        maqC.time = timeFileC();
+        maqC.time = timeFileC() + clock;
         events.add(maqC);
     }
     
