@@ -382,7 +382,10 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     while (counter < correrSimulacion){
         totalSeconds = 0;        
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
-        newEvent.setEventTime();     
+        newEvent.tokenTime = tiempoT;
+        newEvent.originalTokenTime = tiempoT;
+        newEvent.setEventTime();  
+        
                     
         while(totalSeconds <= corridaPorSimulacion){
             
