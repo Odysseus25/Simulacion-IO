@@ -6,7 +6,6 @@
 package simulación.io;
 import java.util.*;
 import java.lang.Math;
-import java.util.ArrayList;
 
 /**
  *
@@ -59,8 +58,70 @@ public class ControladorEventos {
     }
     
     static class Statistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
-        int filesSend;
-    }
+        //tiempos promedio de los archivos en el sistema 
+        double generalAverageTime;
+        double averageTime1;
+        double averageTime2;
+        //tamanos promedios de las colas de las maquinas y el antivirus
+        int QSizeA;
+        int QSizeB;
+        int QSizeC;
+        int QSizeS;
+        //numero promedio de archivos enviados por tiempo de token 
+        int averageSentFiles;
+        //promedio de revisiones por archivo por parte del antivirus
+        int averageChecks; 
+        
+        //calcula el tiempo promedio de los archivos en el sistema
+        public void calculateAverageDouble(Vector<Double> files, int type){
+            double temp = 0.0;
+            for(int i = 0; i < files.capacity()-1; i++){
+                temp += files.get(i);
+            }
+            switch(type){
+                case 0:
+                    this.generalAverageTime = temp/files.capacity();
+                    break; 
+                case 1:
+                    this.averageTime1 = temp/files.capacity();
+                    break;                
+                case 2:
+                    this.averageTime2 = temp/files.capacity();
+                    break;              
+                default:
+                    break;
+            }
+        }
+        
+        //calcula el tamano promedio de la cola de las 3 maquinas y el servidor antivrus
+        //O calcula la cantidad de archivos enviados O la cantidad de revisadas por archivo 
+        public void calculateAverageInt(Vector<Integer> queue, int type){
+            int temp = 0;
+            for(int i = 0; i < queue.capacity()-1; i++){
+                temp += queue.get(i);
+            }
+            switch(type){
+                case 0:
+                    this.QSizeA= temp/queue.capacity();
+                    break; 
+                case 1:
+                    this.QSizeB = temp/queue.capacity();
+                    break;                
+                case 2:
+                    this.QSizeC = temp/queue.capacity();
+                    break;
+                case 3:
+                    this.QSizeS = temp/queue.capacity();
+                case 4:
+                     this.averageSentFiles = temp/queue.capacity();
+                    break;
+                case 5:
+                    this.averageChecks = temp/queue.capacity();
+                    break;
+                default:
+                    break;
+            }
+        }
     
     
     //clase que compara el tiempo de reloj de los eventos para ordenarlos
@@ -77,20 +138,34 @@ public class ControladorEventos {
     MyComparator comparator = new MyComparator();  
     PriorityQueue<Event> events = new PriorityQueue<>(13, comparator);  //cola de prioridad que ordena los eventos por tiempo
     
-    ArrayList <File> priorityFileA1 = new ArrayList <File>();     // Cola de prioridad de archivos 1 maquina A
-    ArrayList <File> priorityFileA2 = new ArrayList <File>();     // Cola de prioridad de archivos 2 maquina A
+    ArrayList <File> priorityFileA1 = new ArrayList <>();     // Cola de prioridad de archivos 1 maquina A
+    ArrayList <File> priorityFileA2 = new ArrayList <>();     // Cola de prioridad de archivos 2 maquina A
         
-    ArrayList <File> priorityFileB1 = new ArrayList <File>();     // Cola de prioridad de archivos 1 maquina B
-    ArrayList <File> priorityFileB2 = new ArrayList <File>();     // Cola de prioridad de archivos 2 maquina B
+    ArrayList <File> priorityFileB1 = new ArrayList <>();     // Cola de prioridad de archivos 1 maquina B
+    ArrayList <File> priorityFileB2 = new ArrayList <>();     // Cola de prioridad de archivos 2 maquina B
     
-    ArrayList <File> priorityFileC1 = new ArrayList <File>();     // Cola de prioridad de archivos 1 maquina C
-    ArrayList <File> priorityFileC2 = new ArrayList <File>();     // Cola de prioridad de archivos 2 maquina C
+    ArrayList <File> priorityFileC1 = new ArrayList <>();     // Cola de prioridad de archivos 1 maquina C
+    ArrayList <File> priorityFileC2 = new ArrayList <>();     // Cola de prioridad de archivos 2 maquina C
     
-    ArrayList <File> serverFiles = new ArrayList <File>();        // Cola de archivos del servidor de antivirus
-    ArrayList <File> routerFiles = new ArrayList <File>();        // Cola de archivos del router
+    ArrayList <File> serverFiles = new ArrayList <>();        // Cola de archivos del servidor de antivirus
+    ArrayList <File> routerFiles = new ArrayList <>();        // Cola de archivos del router
     
-    ArrayList <Statistics> itStadistics = new ArrayList <Statistics>();         // Cola que almacena las estadisticas por iteracion
-    ArrayList <File> finishedFiles = new ArrayList <File>();
+    ArrayList <Statistics> itStadistics = new ArrayList <>();         // Cola que almacena las estadisticas por iteracion
+    ArrayList <File> finishedFiles = new ArrayList <>();
+    
+//vectores dedicados a calcular estadisticas 
+    Vector<Double> generalFileTime = new Vector<>();              //vectores que contienen los tiempos de los archivos en sistema 
+    Vector<Double> fileTime1 = new Vector<>();                     //en general y por prioridad
+    Vector<Double> fileTime2 = new Vector<>();
+    
+    Vector<Integer> queueSizeA = new Vector<>();            //vectores que almacenan el tamano de la cola de cada maquina
+    Vector<Integer> queueSizeB = new Vector<>();
+    Vector<Integer> queueSizeC = new Vector<>();
+    Vector<Integer> queueSizeServer = new Vector<>();
+    
+    Vector<Integer> filesSentByToken = new Vector<>();      //almacena los archivos enviados por token 
+    
+    Vector<Integer> virusCheck = new Vector<>();
     
     double tokenTime;                                             // Se inicializa con el tiempo que define el usuario, usando el metodo set
     double originalTokenTime;                                     // Valor original del token obtenido de la interfaz
@@ -208,8 +283,8 @@ public class ControladorEventos {
      return randomWithRange(1, 64);   
     }
     
+    
     public void FileArrivesA(){
-        
         Event maqA = events.poll();                 // Se saca el evento de la priority queue
         clock = maqA.getTime();
         File A = new File();
@@ -275,6 +350,10 @@ public class ControladorEventos {
         filesSend = 0;
         boolean availableSend = false;
         int i = 0;
+        
+        int queueSize = 0;
+        queueSize = priorityFileA1.size() + priorityFileA2.size();      //guarda el tamano de la cola 
+        queueSizeA.add(queueSize);
         
         while(!availableSend && i < priorityFileA1.size()){                     // Verifica si existe un archivo en la cola de prioridad 1 que se
             if( (priorityFileA1.get(i).size * 1/2) <= tokenTime ){              // pueda enviar en el tiempoToken
@@ -346,6 +425,7 @@ public class ControladorEventos {
                         
             }
         }
+        filesSentByToken.add(filesSend);
     }
     
     public void receivesTokenB(){
@@ -356,6 +436,10 @@ public class ControladorEventos {
         filesSend = 0;
         boolean availableSend = false;
         int i = 0;
+        
+        int queueSize = 0;
+        queueSize = priorityFileB1.size() + priorityFileB2.size();
+        queueSizeB.add(queueSize);
         
         while(!availableSend && i < priorityFileB1.size()){
             if( (priorityFileB1.get(i).size * 1/2) <= tokenTime ){
@@ -421,7 +505,8 @@ public class ControladorEventos {
                 recC.time = clock;
                 events.add(recC);
             }
-        }                
+        }
+        filesSentByToken.add(filesSend);
     }
     
     public void receivesTokenC(){
@@ -432,6 +517,10 @@ public class ControladorEventos {
         filesSend = 0;
         boolean availableSend = false;
         int i = 0;
+        
+        int queueSize = 0;
+        queueSize = priorityFileC1.size() + priorityFileC2.size();
+        queueSizeC.add(queueSize);
         
         while(!availableSend && i < priorityFileC1.size()){
             if( (priorityFileC1.get(i).size * 1/2) <= tokenTime ){
@@ -497,7 +586,8 @@ public class ControladorEventos {
                 recA.time = clock;
                 events.add(recA);
             }
-        }        
+        }
+        filesSentByToken.add(filesSend);
     }
     
     public void tplama(){                                                       // Metodo que termina de poner en linea el archivo de la maquina A
@@ -578,6 +668,7 @@ public class ControladorEventos {
                 }                
             }
         }
+        filesSentByToken.add(filesSend);
     }
     
     public void tplamb(){                                                       // Metodo que termina de poner en linea el archivo de la maquina B
@@ -657,7 +748,8 @@ public class ControladorEventos {
                     // guardar la cantidad de archivos enviados                        
                 }                
             }
-        }        
+        }       
+        filesSentByToken.add(filesSend);
     }
     
     public void tplamc(){
@@ -732,22 +824,24 @@ public class ControladorEventos {
                     Event recA = new Event();
                     recA.numEvent = 4;
                     recA.time = clock;
-                    events.add(recA);
-
-                    // guardar la cantidad de archivos enviados                        
+                    events.add(recA);                     
                 }                
             }
         }
+        filesSentByToken.add(filesSend);
     }
     
     public void lasa(){                                                         // Llega archivo a servidor de antivirus
         Event lasa = events.poll();
         lasa.numEvent = 10;
         clock = lasa.getTime();
-        if(antivirusAvailable && serverFiles.size() != 0){
+        queueSizeB.add(serverFiles.size());     //guarda el tamano de la cola 
+        
+        if(antivirusAvailable && serverFiles.isEmpty()){
             File temp = serverFiles.get(0);
             serverFiles.remove(0);
             antivirusAvailable = false;
+            int check = 0;     //cantidad de veces que revisa un archivo por virus
             int quantityVirus = randomWithRange(0,3); 
             
             if(quantityVirus == 0){
@@ -763,7 +857,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (temp.size / 8);
                 events.add(laar);
-                
+                check++;
                 // almacenar revisiones
             }
             if(quantityVirus == 1){
@@ -779,8 +873,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (3 * temp.size / 16);
                 events.add(laar);
-                
-                // almacenar revisiones
+                check++;
             }
             if(quantityVirus == 2){
                 Event sla = new Event();
@@ -795,8 +888,7 @@ public class ControladorEventos {
                 laar.numEvent = 12;
                 laar.time = clock + (11 * temp.size / 48);
                 events.add(laar);
-                
-                // almacenar revisiones
+                check++;
             }
             if(quantityVirus == 3){
                 Event sla = new Event();
@@ -806,12 +898,13 @@ public class ControladorEventos {
                 
                 lasa.time = 1000000;
                 events.add(lasa);                
-                // almacenar revisiones
+                check++;
             }
         }else{
             lasa.time = 1000000;
             events.add(lasa);
-        }        
+        }
+        virusCheck.add(check);
     }
     
     public void sla(){                                                          // Se libera el antivirus
@@ -820,7 +913,7 @@ public class ControladorEventos {
         clock = sla.getTime();
         
         antivirusAvailable = true;
-        if(serverFiles.size() != 0 && serverFiles.size() != 0){
+        if(serverFiles.isEmpty() && serverFiles.isEmpty()){
             antivirusAvailable = false;
             File temp = serverFiles.get(0);            
             int quantityVirus = randomWithRange(0,3);
@@ -881,7 +974,7 @@ public class ControladorEventos {
         laar.numEvent = 12;
         clock = laar.getTime();
         
-        if(transmisionLine1 && routerFiles.size() != 0){
+        if(transmisionLine1 && routerFiles.isEmpty()){
             transmisionLine1 = false;
             
             File temp = routerFiles.get(0);
@@ -892,7 +985,7 @@ public class ControladorEventos {
             srlt1.time = temp.size / 64 ;
             events.add(srlt1);
         }else{
-            if(transmisionLine2 && routerFiles.size() != 0){
+            if(transmisionLine2 && routerFiles.isEmpty()){
                 transmisionLine2 = false;
                 
                 File temp = routerFiles.get(0);
@@ -917,10 +1010,16 @@ public class ControladorEventos {
         clock = srlt1.getTime();
         transmisionLine1 = true;
         
-        if(routerFiles.size() != 0){
+        if(routerFiles.isEmpty()){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
-            temp.systemTime = srlt1.getTime() - temp.systemTime;
+            generalFileTime.add(srlt1.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema 
+            if(temp.priority == 1){
+                fileTime1.add(srlt1.getTime() - temp.systemTime);
+            }
+            else{
+                fileTime2.add(srlt1.getTime() - temp.systemTime);
+            }
             srlt1.time = clock + (temp.size / 64);
             events.add(srlt1);
         }else{
@@ -935,10 +1034,16 @@ public class ControladorEventos {
         clock = srlt2.getTime();
         transmisionLine1 = true;
         
-        if(routerFiles.size() != 0){
+        if(routerFiles.isEmpty()){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
-            temp.systemTime = srlt2.getTime() - temp.systemTime;
+            generalFileTime.add(srlt2.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema
+            if(temp.priority == 1){
+                fileTime1.add(srlt2.getTime() - temp.systemTime);
+            }
+            else{
+                fileTime2.add(srlt2.getTime() - temp.systemTime);
+            }
             srlt2.time = clock + (temp.size / 64);
             events.add(srlt2);
         }else{
