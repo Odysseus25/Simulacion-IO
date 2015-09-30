@@ -258,11 +258,11 @@ public class ControladorEventos {
         while(temp == 1){
             temp = Math.random();
         }
-        return (-1*(Math.log(temp)))/5;
-    }
+        return ( (-1*(Math.log(1 - temp)))/4 + clock );
+    } 
     
     public double timeFileB(){
-        return (randomWithRange(8, 12)/40);
+        return (Math.sqrt( 80 * (Math.random() + 64) ) + clock);//(randomWithRange(8, 12)/40);
     }  
     
     public double timeFileC(){
@@ -270,7 +270,7 @@ public class ControladorEventos {
         for(int i = 0; i <= 12; i++){
             addedValues += Math.random();
         }
-        return 0.1*(addedValues-6)+5;
+        return ( 0.1*(addedValues-6)+5 + clock );
     } 
     
     //define la prioridad del archivo
@@ -289,7 +289,8 @@ public class ControladorEventos {
     
     
     public void FileArrivesA(){
-        Event maqA = events.poll();                 // Se saca el evento de la priority queue
+        Event maqA = events.poll();                 // Se saca el evento de la priority queue        
+        maqA.numEvent = 1;
         clock = maqA.getTime();
         File A = new File();
         
@@ -303,12 +304,13 @@ public class ControladorEventos {
             priorityFileA2.add(A);
         }
         
-        maqA.time = clock + timeFileA();            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
+        maqA.time = timeFileA();            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
         events.add(maqA);                           // Se vuelve a agregar el evento con nuevos valores
     }
     
     public void fileArrivesB(){
         Event maqB = events.poll();
+        maqB.numEvent = 2;
         clock = maqB.getTime();
         File B = new File();
         
@@ -322,12 +324,13 @@ public class ControladorEventos {
             priorityFileB2.add(B);
         }
         
-        maqB.time = clock + timeFileB();
+        maqB.time = timeFileB();
         events.add(maqB);
     }
     
     public void fileArrivesC(){
         Event maqC = events.poll();
+        maqC.numEvent = 3;
         clock = maqC.getTime();
         File C = new File();
         
@@ -341,7 +344,7 @@ public class ControladorEventos {
             priorityFileC2.add(C);
         }
         
-        maqC.time = clock + timeFileC();
+        maqC.time = timeFileC();
         events.add(maqC);
     }
     
@@ -349,7 +352,7 @@ public class ControladorEventos {
     public void receivesTokenA(){
         Event recA = events.poll();                                             // Copia del evento actual
         clock = recA.getTime();
-       // recA.numEvent = 4;
+        recA.numEvent = 4;
         setTokenTime();
         filesSend = 0;
         boolean availableSend = false;
@@ -435,7 +438,7 @@ public class ControladorEventos {
     public void receivesTokenB(){
         Event recB = events.poll();
         clock = recB.getTime();
-        //recB.numEvent = 5;
+        recB.numEvent = 5;
         setTokenTime();
         filesSend = 0;
         boolean availableSend = false;

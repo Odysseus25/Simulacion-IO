@@ -384,6 +384,8 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
         
         while(totalSeconds <= corridaPorSimulacion){
+            
+            System.out.println("Reloj "+newEvent.clock);
             Calendar calendar = Calendar.getInstance();
             //System.out.println("cantidad de segundos: "+totalSeconds);
             initialSeconds = calendar.get(Calendar.SECOND);    
