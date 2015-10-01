@@ -212,7 +212,7 @@ public class ControladorEventos {
         
         Statistics tempStat = new Statistics();
    
-        for(int i = 0; i < simulationStats.capacity()-1; i++){
+        for(int i = 0; i < simulationStats.capacity()-2; i++){
             tempStat = simulationStats.get(i);
             //tiempos
             stats.generalAverageTime += tempStat.generalAverageTime;
@@ -241,6 +241,7 @@ public class ControladorEventos {
             //pasadas antivirus 
             stats.averageChecks = stats.averageChecks/simulationStats.size();
     }
+    
     // Se setea el tiempo del token con el valor obtenido de la interfaz
     public void setTokenTime(){                          
         tokenTime = originalTokenTime;
