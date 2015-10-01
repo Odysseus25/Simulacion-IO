@@ -6,6 +6,7 @@ package simulación.io;
 import java.util.Calendar;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
 import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
+import java.util.Vector;
 /**
  *
  * @author 
@@ -19,6 +20,25 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     boolean modoRapido = false;
     long sleep;                                                           // Variable que regula el modo lento o rapido de la simulacion
     
+    
+    
+    static class Statistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
+        //tiempos promedio de los archivos en el sistema 
+        double generalAverageTime;
+        double averageTime1;
+        double averageTime2;
+        //tamanos promedios de las colas de las maquinas y el antivirus
+        int QSizeA;
+        int QSizeB;
+        int QSizeC;
+        int QSizeS;
+        //numero promedio de archivos enviados por tiempo de token 
+        int averageSentFiles;
+        //promedio de revisiones por archivo por parte del antivirus
+        int averageChecks;
+    }
+    
+    Vector<Statistics> simulationStats = new Vector<>();                        // Vector con estadisticas finales
     
     
     public VentadaPrincipal() {
@@ -375,6 +395,14 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         sleep = 0;
     }
     
+    System.out.println();
+    System.out.println();
+    System.out.println("                    PROYECTO SIMULACION RED DE ARCHIVOS ANALIZADOS IO 2015");
+    System.out.println();
+    System.out.println();
+    System.out.println("Datos finales sobre la corrida:");
+    System.out.println();    
+    
     while (counter < correrSimulacion){
         totalSeconds = 0;        
         ControladorEventos newEvent = new ControladorEventos();                 // Nueva  simulacion
@@ -552,12 +580,90 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             }
             
         }
-        //progressBar.
+        System.out.println("Número de Corrida Actual: "+counter+1);
+        newEvent.calculateStatistics();
+        
+        for(int i = 0; i < newEvent.simulationStats.size(); ++i){
+            Statistics obj = new Statistics();
+            
+            obj.generalAverageTime = newEvent.simulationStats.get(i).generalAverageTime;
+            obj.averageTime1 = newEvent.simulationStats.get(i).averageTime1;
+            obj.averageTime2 = newEvent.simulationStats.get(i).averageTime2;
+            //colas
+            obj.QSizeA = newEvent.simulationStats.get(i).QSizeA;
+            obj.QSizeB = newEvent.simulationStats.get(i).QSizeB;
+            obj.QSizeC = newEvent.simulationStats.get(i).QSizeC;
+            obj.QSizeS = newEvent.simulationStats.get(i).QSizeS;
+            //archivos enviados
+            obj.averageSentFiles = newEvent.simulationStats.get(i).averageSentFiles;
+            //pasadas antivirus 
+            obj.averageChecks = newEvent.simulationStats.get(i).averageChecks;
+            
+            simulationStats.add(obj);
+        }
+        
         ++counter;
         //System.out.println("sali de ciclo");
     }
+    
+    finalStatistics();
+    
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
+    
+    //se calculan las estadisticas generales de todas las simulaciones
+    public void finalStatistics(){
+        //variables temporales
+        
+        Statistics tempStat = new Statistics();
+        Statistics stats = new Statistics();
+   
+        for(int i = 0; i < simulationStats.capacity()-2; i++){
+            tempStat = simulationStats.get(i);
+            //tiempos
+            stats.generalAverageTime += tempStat.generalAverageTime;
+            stats.averageTime1 += tempStat.averageTime1;
+            stats.averageTime2 += tempStat.averageTime2;
+            //colas
+            stats.QSizeA += tempStat.QSizeA;
+            stats.QSizeB += tempStat.QSizeB;
+            stats.QSizeC += tempStat.QSizeC;
+            stats.QSizeS += tempStat.QSizeS;
+            //archivos enviados
+            stats.averageSentFiles = tempStat.averageSentFiles;
+            //pasadas antivirus 
+            stats.averageChecks = tempStat.averageChecks;
+        }
+            stats.generalAverageTime = stats.generalAverageTime/simulationStats.size();
+            stats.averageTime1 = stats.generalAverageTime/simulationStats.size();
+            stats.averageTime2 = stats.generalAverageTime/simulationStats.size();
+            //colas
+            stats.QSizeA = stats.QSizeA/simulationStats.size();
+            stats.QSizeB = stats.QSizeB/simulationStats.size();
+            stats.QSizeC = stats.QSizeC/simulationStats.size();
+            stats.QSizeS = stats.QSizeS/simulationStats.size();
+            //archivos enviados
+            stats.averageSentFiles = stats.averageSentFiles/simulationStats.size();
+            //pasadas antivirus 
+            stats.averageChecks = stats.averageChecks/simulationStats.size();
+            
+            System.out.println("Estadísticas Finales");
+            System.out.println();
+            System.out.println();
+            System.out.println("Tamaño Promedio Cola A:        "+stats.QSizeA);
+            System.out.println("Tamaño Promedio Cola B:        "+stats.QSizeB);
+            System.out.println("Tamaño Promedio Cola C:        "+stats.QSizeC);
+            System.out.println("Tamaño Promedio Cola Servidor: "+stats.QSizeS);
+            System.out.println();
+            System.out.println("Promedio de Permamencia General de Archivo:        "+stats.generalAverageTime);        
+            System.out.println("Promedio de Permanencia de Archivo Prioridad 1:    "+stats.averageTime1);
+            System.out.println("Promedio de Permanencia de Archivo Prioridad 2:    "+stats.averageTime2);
+            System.out.println();
+            System.out.println("Promedio Archivos Enviados por Token: "+stats.averageSentFiles);
+            System.out.println("Promedio de Revisiones por Archivo:   "+stats.averageChecks);
+            System.out.println();
+    }
+    
     private void tiempoTtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiempoTtxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tiempoTtxtActionPerformed

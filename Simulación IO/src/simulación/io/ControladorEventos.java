@@ -204,42 +204,21 @@ public class ControladorEventos {
         stats.calculateAverageInt(virusCheck, 5);
         
         simulationStats.add(stats);
-    }
-    
-    //se calculan las estadisticas generales de todas las simulaciones
-    public void finalStatistics(){
-        //variables temporales
         
-        Statistics tempStat = new Statistics();
-   
-        for(int i = 0; i < simulationStats.capacity()-2; i++){
-            tempStat = simulationStats.get(i);
-            //tiempos
-            stats.generalAverageTime += tempStat.generalAverageTime;
-            stats.averageTime1 += tempStat.averageTime1;
-            stats.averageTime2 += tempStat.averageTime2;
-            //colas
-            stats.QSizeA += tempStat.QSizeA;
-            stats.QSizeB += tempStat.QSizeB;
-            stats.QSizeC += tempStat.QSizeC;
-            stats.QSizeS += tempStat.QSizeS;
-            //archivos enviados
-            stats.averageSentFiles = tempStat.averageSentFiles;
-            //pasadas antivirus 
-            stats.averageChecks = tempStat.averageChecks;
-        }
-            stats.generalAverageTime = stats.generalAverageTime/simulationStats.size();
-            stats.averageTime1 = stats.generalAverageTime/simulationStats.size();
-            stats.averageTime2 = stats.generalAverageTime/simulationStats.size();
-            //colas
-            stats.QSizeA = stats.QSizeA/simulationStats.size();
-            stats.QSizeB = stats.QSizeB/simulationStats.size();
-            stats.QSizeC = stats.QSizeC/simulationStats.size();
-            stats.QSizeS = stats.QSizeS/simulationStats.size();
-            //archivos enviados
-            stats.averageSentFiles = stats.averageSentFiles/simulationStats.size();
-            //pasadas antivirus 
-            stats.averageChecks = stats.averageChecks/simulationStats.size();
+        System.out.println();
+        System.out.println("Tamaño Promedio Cola A:        "+stats.QSizeA);
+        System.out.println("Tamaño Promedio Cola B:        "+stats.QSizeB);
+        System.out.println("Tamaño Promedio Cola C:        "+stats.QSizeC);
+        System.out.println("Tamaño Promedio Cola Servidor: "+stats.QSizeS);
+        System.out.println();
+        System.out.println("Promedio de Permamencia General de Archivo:        "+stats.generalAverageTime);        
+        System.out.println("Promedio de Permanencia de Archivo Prioridad 1:    "+stats.averageTime1);
+        System.out.println("Promedio de Permanencia de Archivo Prioridad 2:    "+stats.averageTime2);
+        System.out.println();
+        System.out.println("Promedio Archivos Enviados por Token: "+stats.averageSentFiles);
+        System.out.println("Promedio de Revisiones por Archivo:   "+stats.averageChecks);
+        System.out.println();
+        System.out.println();
     }
     
     // Se setea el tiempo del token con el valor obtenido de la interfaz
