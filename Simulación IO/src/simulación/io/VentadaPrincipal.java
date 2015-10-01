@@ -580,7 +580,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             }
             
         }
-        System.out.println("Número de Corrida Actual: "+counter+1);
+        System.out.println("Número de Corrida Actual: "+(counter+1));
         newEvent.calculateStatistics();
         
         for(int i = 0; i < newEvent.simulationStats.size(); ++i){
@@ -618,7 +618,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         Statistics tempStat = new Statistics();
         Statistics stats = new Statistics();
    
-        for(int i = 0; i < simulationStats.capacity()-2; i++){
+        for(int i = 0; i < simulationStats.size()-2; i++){
             tempStat = simulationStats.get(i);
             //tiempos
             stats.generalAverageTime += tempStat.generalAverageTime;

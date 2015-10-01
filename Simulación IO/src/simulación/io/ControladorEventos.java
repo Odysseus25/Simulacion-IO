@@ -75,18 +75,18 @@ public class ControladorEventos {
         //calcula el tiempo promedio de los archivos en el sistema
         public void calculateAverageDouble(Vector<Double> files, int type){
             double temp = 0.0;
-            for(int i = 0; i < files.capacity()-1; i++){
+            for(int i = 0; i < files.size()-1; i++){
                 temp += files.get(i);
             }
             switch(type){
                 case 0:
-                    this.generalAverageTime = temp/files.capacity();
+                    this.generalAverageTime = temp/files.size();
                     break; 
                 case 1:
-                    this.averageTime1 = temp/files.capacity();
+                    this.averageTime1 = temp/files.size();
                     break;                
                 case 2:
-                    this.averageTime2 = temp/files.capacity();
+                    this.averageTime2 = temp/files.size();
                     break;              
                 default:
                     break;
@@ -97,26 +97,26 @@ public class ControladorEventos {
         //O calcula la cantidad de archivos enviados O la cantidad de revisadas por archivo 
         public void calculateAverageInt(Vector<Integer> queue, int type){
             int temp = 0;
-            for(int i = 0; i < queue.capacity()-1; i++){
+            for(int i = 0; i < queue.size()-1; i++){
                 temp += queue.get(i);
             }
             switch(type){
                 case 0:
-                    this.QSizeA= temp/queue.capacity();
+                    this.QSizeA= temp/queue.size();
                     break; 
                 case 1:
-                    this.QSizeB = temp/queue.capacity();
+                    this.QSizeB = temp/queue.size();
                     break;                
                 case 2:
-                    this.QSizeC = temp/queue.capacity();
+                    this.QSizeC = temp/queue.size();
                     break;
                 case 3:
-                    this.QSizeS = temp/queue.capacity();
+                    this.QSizeS = temp/queue.size();
                 case 4:
-                     this.averageSentFiles = temp/queue.capacity();
+                     this.averageSentFiles = temp/queue.size();
                     break;
                 case 5:
-                    this.averageChecks = temp/queue.capacity();
+                    this.averageChecks = temp/queue.size();
                     break;
                 default:
                     break;
@@ -940,8 +940,8 @@ public class ControladorEventos {
         Event lasa = events.poll();
         lasa.numEvent = 10;
         clock = lasa.getTime();
-        queueSizeB.add(serverFiles.size());     //guarda el tamano de la cola 
-        int passes = 0;     //cantidad de veces que revisa un archivo por virus
+        queueSizeServer.add(serverFiles.size());                                     //guarda el tamano de la cola 
+        int passes = 0;                                                         //cantidad de veces que revisa un archivo por virus
         
         if(antivirusAvailable && serverFiles.size() != 0){
             File temp = serverFiles.get(0);
@@ -1099,7 +1099,7 @@ public class ControladorEventos {
             
             Event srlt1 = new Event();
             srlt1.numEvent = 13;
-            srlt1.time = temp.size / 64 ;
+            srlt1.time = (temp.size / 64) + clock;
             srlt1.nombre = "Sale por linea 1";
             events.add(srlt1);
             
@@ -1114,7 +1114,7 @@ public class ControladorEventos {
                 
                 Event srlt2 = new Event();
                 srlt2.numEvent = 14;
-                srlt2.time = temp.size /64 ;  
+                srlt2.time = (temp.size /64) + clock;  
                 srlt2.nombre = "Sale por linea 2";
                 events.add(srlt2);
                 
@@ -1130,18 +1130,19 @@ public class ControladorEventos {
     public void srlt1(){                                                        // Salida de router por linea de transmision 1
         Event srlt1 = events.poll();
         srlt1.numEvent = 13;
-        clock = srlt1.getTime();
+        clock = srlt1.time;
         transmisionLine1 = true;
-        
         if(routerFiles.size() != 0){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
-            generalFileTime.add(srlt1.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema 
+            generalFileTime.add(clock - temp.systemTime);   //agrega tiempo de archivo en el sistema 
             if(temp.priority == 1){
-                fileTime1.add(srlt1.getTime() - temp.systemTime);
+                System.out.println("entroooooooooooo 1");
+                fileTime1.add(clock - temp.systemTime);
             }
             else{
-                fileTime2.add(srlt1.getTime() - temp.systemTime);
+                                                System.out.println("entroooooooooooo ");
+                fileTime2.add(clock - temp.systemTime);
             }
             srlt1.time = clock + (temp.size / 64);
             events.add(srlt1);
@@ -1161,12 +1162,12 @@ public class ControladorEventos {
         if(routerFiles.size() != 0){
             File temp = routerFiles.get(0);
             routerFiles.remove(0);
-            generalFileTime.add(srlt2.getTime() - temp.systemTime);   //agrega tiempo de archivo en el sistema
+            generalFileTime.add(clock - temp.systemTime);   //agrega tiempo de archivo en el sistema
             if(temp.priority == 1){
-                fileTime1.add(srlt2.getTime() - temp.systemTime);
+                fileTime1.add(clock - temp.systemTime);
             }
             else{
-                fileTime2.add(srlt2.getTime() - temp.systemTime);
+                fileTime2.add(clock - temp.systemTime);
             }
             srlt2.time = clock + (temp.size / 64);
             events.add(srlt2);
