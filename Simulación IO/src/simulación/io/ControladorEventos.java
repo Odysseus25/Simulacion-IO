@@ -227,15 +227,15 @@ public class ControladorEventos {
         events.add(maqC);
         
         double rand = Math.random()*100;
-        System.out.println("Intervalo generado: " + rand);
+        //System.out.println("Intervalo generado: " + rand);
         if(rand > 0 && rand < 32){
             Event rcvTkA = new Event();
             rcvTkA.nombre = "Recibe token A";
             rcvTkA.time = temp + 1; 
             rcvTkA.numEvent = 4;
             events.add(rcvTkA);
-                    System.out.println(rcvTkA.nombre);
-                     System.out.println(rcvTkA.time);
+          //          System.out.println(rcvTkA.nombre);
+          //           System.out.println(rcvTkA.time);
         }
         else{
             if(rand > 33 && rand < 65){
@@ -244,8 +244,8 @@ public class ControladorEventos {
                 rcvTkB.time = temp + 1; 
                 rcvTkB.numEvent = 5;
                 events.add(rcvTkB);
-                      System.out.println(rcvTkB.nombre);
-                     System.out.println(rcvTkB.time);
+                      //System.out.println(rcvTkB.nombre);
+                     //System.out.println(rcvTkB.time);
             }
             else{
                 Event rcvTkC = new Event();
@@ -253,8 +253,8 @@ public class ControladorEventos {
                 rcvTkC.time = temp + 1; 
                 rcvTkC.numEvent = 6;
                 events.add(rcvTkC);
-                    System.out.println(rcvTkC.nombre);
-                     System.out.println(rcvTkC.time);
+                    //System.out.println(rcvTkC.nombre);
+                     //System.out.println(rcvTkC.time);
             }
         }
     }
@@ -457,11 +457,11 @@ public class ControladorEventos {
         queueSizeB.add(queueSize);
 
         while(!availableSend && i < priorityFileB1.size()){     //itera sobre la cola 1 de archivos para ver si puede mandar alguno 
-                    System.out.println("Estoy en el while ");
-                    System.out.println("tamano de archivo " + priorityFileB1.get(i).size);
-                     System.out.println("token: " + tokenTime);
+                    //System.out.println("Estoy en el while ");
+                    //System.out.println("tamano de archivo " + priorityFileB1.get(i).size);
+                     //System.out.println("token: " + tokenTime);
             if( (priorityFileB1.get(i).size * 1/2) <= tokenTime ){
-                            System.out.println("mando prioridad 1");
+                       //     System.out.println("mando prioridad 1");
                 availableSend = true;
             }else{
                 ++i;
@@ -473,10 +473,10 @@ public class ControladorEventos {
             priorityFileB1.remove(i);
             
             Event LASA = new Event();                                           // Nuevo evento para este unico archivo
-                            System.out.println("LASA PUESTO EN COLA-----------------------------");
+                            //System.out.println("LASA PUESTO EN COLA-----------------------------");
             LASA.numEvent = 10;
             LASA.time = clock + (B.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
-                                        System.out.println("LASA TIME: " + LASA.getTime());
+//                                        System.out.println("LASA TIME: " + LASA.getTime());
             LASA.nombre = "Llega archivo a antivirus";
             events.add(LASA);
             serverFiles.add(B); 
@@ -495,7 +495,7 @@ public class ControladorEventos {
             int j = 0;
             while(!availableSend && j < priorityFileB2.size()){
                 if( (priorityFileB2.get(j).size * 1/2) <= tokenTime ){
-                                                System.out.println("mando prioridad 2");
+                           //                     System.out.println("mando prioridad 2");
                     availableSend = true;
                 }else{
                     ++j;
@@ -628,11 +628,11 @@ public class ControladorEventos {
         tplama.numEvent = 7;
         clock = tplama.getTime();
         
-        System.out.println("Tiempo de token: "+tokenTime);
+        //System.out.println("Tiempo de token: "+tokenTime);
         
         if(tokenTime <= 0){
             tplama.time = 1000000;
-            System.out.println("Entra aqui ****************************************************************************************************");
+          //  System.out.println("Entra aqui ****************************************************************************************************");
             //almacenar cantidad de archivos enviados
             Event recB = new Event();
             recB.numEvent = 5;
@@ -720,11 +720,11 @@ public class ControladorEventos {
         Event tplamb = events.poll();
         tplamb.numEvent = 8;
         clock = tplamb.getTime();
-        System.out.println("Tiempo de token: "+tokenTime);
+        //System.out.println("Tiempo de token: "+tokenTime);
         if(tokenTime <= 0){
             tplamb.time = 1000000;
             //almacenar cantidad de archivos enviados
-            System.out.println("Entra aqui ****************************************************************************************************");
+            //System.out.println("Entra aqui ****************************************************************************************************");
             Event recC = new Event();
             recC.numEvent = 6;
             recC.time = clock;       
@@ -811,11 +811,11 @@ public class ControladorEventos {
         Event tplamc = events.poll();
         tplamc.numEvent = 9;
         clock = tplamc.getTime();
-        System.out.println("Tiempo de token: "+tokenTime);
+        //System.out.println("Tiempo de token: "+tokenTime);
         if(tokenTime <= 0){
             tplamc.time = 1000000;
             //almacenar cantidad de archivos enviados
-            System.out.println("Entra aqui ****************************************************************************************************");
+            //System.out.println("Entra aqui ****************************************************************************************************");
             Event recA = new Event();
             recA.numEvent = 4;
             recA.time = clock;   
@@ -903,7 +903,7 @@ public class ControladorEventos {
         queueSizeB.add(serverFiles.size());     //guarda el tamano de la cola 
         int passes = 0;     //cantidad de veces que revisa un archivo por virus
         
-        if(antivirusAvailable && serverFiles.isEmpty()){
+        if(antivirusAvailable && serverFiles.size() != 0){
             File temp = serverFiles.get(0);
             serverFiles.remove(0);
             antivirusAvailable = false;
@@ -987,7 +987,7 @@ public class ControladorEventos {
         clock = sla.getTime();
         
         antivirusAvailable = true;
-        if(serverFiles.isEmpty() && serverFiles.isEmpty()){
+        if(serverFiles.size() != 0){
             antivirusAvailable = false;
             File temp = serverFiles.get(0);            
             int quantityVirus = (int)randomWithRange(0,3);
@@ -1051,7 +1051,7 @@ public class ControladorEventos {
         laar.numEvent = 12;
         clock = laar.getTime();
         
-        if(transmisionLine1 && routerFiles.isEmpty()){
+        if(transmisionLine1 && routerFiles.size() != 0){
             transmisionLine1 = false;
             
             File temp = routerFiles.get(0);
@@ -1062,8 +1062,12 @@ public class ControladorEventos {
             srlt1.time = temp.size / 64 ;
             srlt1.nombre = "Sale por linea 1";
             events.add(srlt1);
+            
+            laar.time = 1000000;
+            events.add(laar);
+            
         }else{
-            if(transmisionLine2 && routerFiles.isEmpty()){
+            if(transmisionLine2 && routerFiles.size() != 0){
                 transmisionLine2 = false;
                 
                 File temp = routerFiles.get(0);
@@ -1104,7 +1108,8 @@ public class ControladorEventos {
         }else{
             srlt1.time = 1000000;
             events.add(srlt1);
-        }        
+        }   
+        System.out.println("Salio del router 1");
     }
     
     public void srlt2(){                                                        // Salida de router por linea de transmision 1
@@ -1129,5 +1134,6 @@ public class ControladorEventos {
             srlt2.time = 1000000;
             events.add(srlt2);
         }        
+        System.out.println("Salio del router 2");
     }    
 }

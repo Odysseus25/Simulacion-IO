@@ -5,6 +5,7 @@ package simulación.io;
 
 import java.util.Calendar;                                                       // Paquete necesario para correr la simulacion por cierta cantidad de tiempo
 import java.util.concurrent.TimeUnit;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author 
@@ -433,71 +434,71 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     eventName = "Máquina C recibe archivo";
                     break;
                 case 4:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+                    //            System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.receivesTokenA();
                     eventName = "Máquina A recibe token";
                     table1.setValueAt("Máquina A", 0, 2);
                     break;
                 case 5:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.receivesTokenB();
                     eventName = "Máquina B recibe token";
                     table1.setValueAt("Máquina B", 0, 2);
                     break;
                 case 6:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.receivesTokenC();
                     eventName = "Máquina C recibe token";
                     table1.setValueAt("Máquina C", 0, 2);
                     break;
                 case 7:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplama();
                     eventName = "Archivo en linea A";
                     break;
                 case 8:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplamb();
                     eventName = "Archivo en linea B";
                     break;
                 case 9:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplamc();
                     eventName = "Archivo en linea C";
                     break;
                 case 10:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.lasa();
                     eventName = "Archivo llega al servidor";
                     break;
                 case 11:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.sla();
                     eventName = "Archivo sale de servidor";
                     break;
                 case 12:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.laar();
                     eventName = "Archivo llega a router";
                     break;
                 case 13:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.srlt1();
                     eventName = "Sale por linea 1 de router";
                     break;
                 case 14:
-                                System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
-            System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
+              //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
+            //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.srlt2();
                     eventName = "Sale por linea 2 de router";
                     break;
@@ -528,11 +529,12 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                 }else{
                     table2.setValueAt(0,0,0);                                   // ninguna linea libre
                 }
-            }
-            
+            }            
             table2.setValueAt(eventName, 0, 1);
             
-            try{                                                                // Se esperan un tiempo para refrescar la interfaz
+            SwingUtilities.updateComponentTreeUI(this);
+            
+            try{                                                                // Se esperan un tiempo para ejecutar en modo rapido o lento
                 
                 TimeUnit.MILLISECONDS.sleep(sleep);                
                 
@@ -543,7 +545,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         }
         //progressBar.
         ++counter;
-        System.out.println("sali de ciclo");
+        //System.out.println("sali de ciclo");
     }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
