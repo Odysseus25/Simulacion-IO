@@ -1170,7 +1170,7 @@ public class ControladorEventos {
             srlt1.time = 1000000;
             events.add(srlt1);
         }   
-        System.out.println("Salio del router 1");
+        //System.out.println("Salio del router 1");
     }
     
     public void srlt2(){                                                        // Salida de router por linea de transmision 1
@@ -1195,6 +1195,6 @@ public class ControladorEventos {
             srlt2.time = 1000000;
             events.add(srlt2);
         }        
-        System.out.println("Salio del router 2");
+        //System.out.println("Salio del router 2");
     }  
 }

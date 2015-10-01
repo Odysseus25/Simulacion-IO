@@ -37,7 +37,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         longitudcolaprioridad3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        progressBar = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -189,15 +188,17 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(205, 205, 205))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jToggleButton2)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,10 +257,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                                 .addComponent(longitudcolaprioridad2c, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(205, 205, 205))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,11 +322,9 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jRadioButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(jToggleButton2)
-                .addGap(57, 57, 57))
+                .addGap(78, 78, 78))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -345,8 +340,8 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -420,18 +415,21 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.FileArrivesA();
                     eventName = "Máquina A recibe archivo";
+                    //System.out.println("LAMA");
                     break;
                 case 2:
                     //System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
                     //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesB();
                     eventName = "Máquina B recibe archivo";
+                    //System.out.println("LAMB");
                     break;                
                 case 3:
                     //System.out.println("valor del numEvent: "+newEvent.events.peek().numEvent);
                     //System.out.println("nombre del numEvent: "+newEvent.events.peek().nombre);
                     newEvent.fileArrivesC();
                     eventName = "Máquina C recibe archivo";
+                    //System.out.println("LAMC");
                     break;
                 case 4:
                     //            System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
@@ -439,6 +437,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     newEvent.receivesTokenA();
                     eventName = "Máquina A recibe token";
                     table1.setValueAt("Máquina A", 0, 2);
+                    //System.out.println("RTMA");
                     break;
                 case 5:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
@@ -446,6 +445,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     newEvent.receivesTokenB();
                     eventName = "Máquina B recibe token";
                     table1.setValueAt("Máquina B", 0, 2);
+                    //System.out.println("RTMB");
                     break;
                 case 6:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
@@ -453,54 +453,63 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     newEvent.receivesTokenC();
                     eventName = "Máquina C recibe token";
                     table1.setValueAt("Máquina C", 0, 2);
+                    //System.out.println("RTMC");
                     break;
                 case 7:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplama();
                     eventName = "Archivo en linea A";
+                    //System.out.println("TPLAMA");
                     break;
                 case 8:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplamb();
                     eventName = "Archivo en linea B";
+                    //System.out.println("TPLAMB");
                     break;
                 case 9:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.tplamc();
                     eventName = "Archivo en linea C";
+                    //System.out.println("TPLAMC");
                     break;
                 case 10:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.lasa();
                     eventName = "Archivo llega al servidor";
+                    //System.out.println("LASA");
                     break;
                 case 11:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.sla();
                     eventName = "Archivo sale de servidor";
+                    //System.out.println("SLA");
                     break;
                 case 12:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.laar();
                     eventName = "Archivo llega a router";
+                    //System.out.println("LAAR");
                     break;
                 case 13:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.srlt1();
                     eventName = "Sale por linea 1 de router";
+                    //System.out.println("SRLT1");
                     break;
                 case 14:
               //                  System.out.println("Evento escogido:"+newEvent.events.peek().nombre);
             //System.out.println("Tiempo de evento:"+newEvent.events.peek().time);
                     newEvent.srlt2();
                     eventName = "Sale por linea 2 de router";
+                    //System.out.println("SRLT2");
                     break;
             }
             
@@ -532,7 +541,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             }            
             table2.setValueAt(eventName, 0, 1);
             
-            SwingUtilities.updateComponentTreeUI(this);
+            //SwingUtilities.updateComponentTreeUI(this);
             
             try{                                                                // Se esperan un tiempo para ejecutar en modo rapido o lento
                 
@@ -628,7 +637,6 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     public javax.swing.JLabel longitudcolaprioridad2b;
     public javax.swing.JLabel longitudcolaprioridad2c;
     public javax.swing.JLabel longitudcolaprioridad3;
-    public javax.swing.JProgressBar progressBar;
     public javax.swing.JTable table1;
     public javax.swing.JTable table2;
     private javax.swing.JTextField tiempoTtxt;
