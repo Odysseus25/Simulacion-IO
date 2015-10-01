@@ -170,6 +170,8 @@ public class ControladorEventos {
     
     Vector<Integer> virusCheck = new Vector<>();
     
+    Vector<Statistics> simulationStats = new Vector<>();
+    
     double tokenTime;                                             // Se inicializa con el tiempo que define el usuario, usando el metodo set
     double originalTokenTime;                                     // Valor original del token obtenido de la interfaz
     double clock; 
@@ -200,8 +202,45 @@ public class ControladorEventos {
         
         //revisadas de virus por archivo
         stats.calculateAverageInt(virusCheck, 5);
-    }
         
+        simulationStats.add(stats);
+    }
+    
+    //se calculan las estadisticas generales de todas las simulaciones
+    public void finalStatistics(){
+        //variables temporales
+        
+        Statistics tempStat = new Statistics();
+   
+        for(int i = 0; i < simulationStats.capacity()-1; i++){
+            tempStat = simulationStats.get(i);
+            //tiempos
+            stats.generalAverageTime += tempStat.generalAverageTime;
+            stats.averageTime1 += tempStat.averageTime1;
+            stats.averageTime2 += tempStat.averageTime2;
+            //colas
+            stats.QSizeA += tempStat.QSizeA;
+            stats.QSizeB += tempStat.QSizeB;
+            stats.QSizeC += tempStat.QSizeC;
+            stats.QSizeS += tempStat.QSizeS;
+            //archivos enviados
+            stats.averageSentFiles = tempStat.averageSentFiles;
+            //pasadas antivirus 
+            stats.averageChecks = tempStat.averageChecks;
+        }
+            stats.generalAverageTime = stats.generalAverageTime/simulationStats.size();
+            stats.averageTime1 = stats.generalAverageTime/simulationStats.size();
+            stats.averageTime2 = stats.generalAverageTime/simulationStats.size();
+            //colas
+            stats.QSizeA = stats.QSizeA/simulationStats.size();
+            stats.QSizeB = stats.QSizeB/simulationStats.size();
+            stats.QSizeC = stats.QSizeC/simulationStats.size();
+            stats.QSizeS = stats.QSizeS/simulationStats.size();
+            //archivos enviados
+            stats.averageSentFiles = stats.averageSentFiles/simulationStats.size();
+            //pasadas antivirus 
+            stats.averageChecks = stats.averageChecks/simulationStats.size();
+    }
     // Se setea el tiempo del token con el valor obtenido de la interfaz
     public void setTokenTime(){                          
         tokenTime = originalTokenTime;
