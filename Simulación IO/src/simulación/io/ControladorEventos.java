@@ -139,6 +139,8 @@ public class ControladorEventos {
     MyComparator comparator = new MyComparator();  
     PriorityQueue<Event> events = new PriorityQueue<>(13, comparator);  //cola de prioridad que ordena los eventos por tiempo
     
+    Statistics stats = new Statistics();       //maneja las estadisticas de cada simulacion 
+    
     ArrayList <File> priorityFileA1 = new ArrayList <>();     // Cola de prioridad de archivos 1 maquina A
     ArrayList <File> priorityFileA2 = new ArrayList <>();     // Cola de prioridad de archivos 2 maquina A
         
@@ -180,7 +182,26 @@ public class ControladorEventos {
     
     // ---------------- Fin de declaracion---------------------------------------- //
     
-    
+    //Se calculan las estadisticas de por simulacion
+    public void calculateStatistics(){
+        //estancia de archivos en el sistema
+        stats.calculateAverageDouble(generalFileTime, 0);           //tiempo general
+        stats.calculateAverageDouble(fileTime1, 1);                 //prioridad 1
+        stats.calculateAverageDouble(fileTime2, 2);                 //prioridad 2
+        
+        //tamano de cola
+        stats.calculateAverageInt(queueSizeA, 0);                   //maquina A
+        stats.calculateAverageInt(queueSizeB, 1);                   //maquina B
+        stats.calculateAverageInt(queueSizeC, 2);                   //maquina C
+        stats.calculateAverageInt(queueSizeServer, 3);              //antivirus
+        
+        //archivos enviados por token
+        stats.calculateAverageInt(filesSentByToken, 4);
+        
+        //revisadas de virus por archivo
+        stats.calculateAverageInt(virusCheck, 5);
+    }
+        
     // Se setea el tiempo del token con el valor obtenido de la interfaz
     public void setTokenTime(){                          
         tokenTime = originalTokenTime;
@@ -1135,5 +1156,5 @@ public class ControladorEventos {
             events.add(srlt2);
         }        
         System.out.println("Salio del router 2");
-    }    
+    }  
 }
