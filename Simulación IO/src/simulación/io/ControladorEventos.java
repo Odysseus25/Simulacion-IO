@@ -57,6 +57,11 @@ public class ControladorEventos {
         double size;
     }
     
+    static class VirusStats{
+        int totalChecks = 0;
+        int quantityOfChecks = 0;
+    }
+    
     static class Statistics{                                                    // Utilizada como nodo de una lista de estadisticas que se almacenan por iteracion
         //tiempos promedio de los archivos en el sistema 
         double generalAverageTime;
@@ -78,18 +83,20 @@ public class ControladorEventos {
             for(int i = 0; i < files.size()-1; i++){
                 temp += files.get(i);
             }
-            switch(type){
-                case 0:
-                    this.generalAverageTime = temp/files.size();
-                    break; 
-                case 1:
-                    this.averageTime1 = temp/files.size();
-                    break;                
-                case 2:
-                    this.averageTime2 = temp/files.size();
-                    break;              
-                default:
-                    break;
+            if(files.size() != 0){
+                switch(type){
+                    case 0:
+                        this.generalAverageTime = temp/files.size();
+                        break; 
+                    case 1:
+                        this.averageTime1 = temp/files.size();
+                        break;                
+                    case 2:
+                        this.averageTime2 = temp/files.size();
+                        break;              
+                    default:
+                        break;
+                }
             }
         }
         
@@ -97,29 +104,31 @@ public class ControladorEventos {
         //O calcula la cantidad de archivos enviados O la cantidad de revisadas por archivo 
         public void calculateAverageInt(Vector<Integer> queue, int type){
             int temp = 0;
-            for(int i = 0; i < queue.size()-1; i++){
+            for(int i = 0; i < queue.size(); i++){
                 temp += queue.get(i);
             }
-            switch(type){
-                case 0:
-                    this.QSizeA= temp/queue.size();
-                    break; 
-                case 1:
-                    this.QSizeB = temp/queue.size();
-                    break;                
-                case 2:
-                    this.QSizeC = temp/queue.size();
-                    break;
-                case 3:
-                    this.QSizeS = temp/queue.size();
-                case 4:
-                     this.averageSentFiles = temp/queue.size();
-                    break;
-                case 5:
-                    this.averageChecks = temp/queue.size();
-                    break;
-                default:
-                    break;
+            if(queue.size() != 0){
+                switch(type){
+                    case 0:
+                        this.QSizeA= temp/queue.size();
+                        break; 
+                    case 1:
+                        this.QSizeB = temp/queue.size();
+                        break;                
+                    case 2:
+                        this.QSizeC = temp/queue.size();
+                        break;
+                    case 3:
+                        this.QSizeS = temp/queue.size();
+                    case 4:
+                         this.averageSentFiles = temp/queue.size();
+                        break;
+                    case 5:
+                        this.averageChecks = temp/queue.size();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -182,14 +191,25 @@ public class ControladorEventos {
     boolean transmisionLine1 = true;                                            // Lineas de transmision de router
     boolean transmisionLine2 = true;
     
+    int totalChecks = 0;
+    int quantityOfChecks = 0;
+    
     // ---------------- Fin de declaracion---------------------------------------- //
     
     //Se calculan las estadisticas de por simulacion
     public void calculateStatistics(){
-        //estancia de archivos en el sistema
-        stats.calculateAverageDouble(generalFileTime, 0);           //tiempo general
+        //estancia de archivos en el sistema        
         stats.calculateAverageDouble(fileTime1, 1);                 //prioridad 1
         stats.calculateAverageDouble(fileTime2, 2);                 //prioridad 2
+        
+        if(stats.averageTime1 == 0){
+            stats.averageTime1 = clock;
+        }
+        if(stats.averageTime2 == 0){
+            stats.averageTime2 = clock;
+        }
+        
+        stats.calculateAverageDouble(generalFileTime, 0);           //tiempo general
         
         //tamano de cola
         stats.calculateAverageInt(queueSizeA, 0);                   //maquina A
@@ -203,7 +223,9 @@ public class ControladorEventos {
         //revisadas de virus por archivo
         stats.calculateAverageInt(virusCheck, 5);
         
-        simulationStats.add(stats);
+        /**for(int i = 0; i < virusCheck.size(); ++i){
+            System.out.print(""+virusCheck.get(i)+" - ");
+        }**/
         
         System.out.println();
         System.out.println("Tamaño Promedio Cola A:        "+stats.QSizeA);
@@ -211,7 +233,7 @@ public class ControladorEventos {
         System.out.println("Tamaño Promedio Cola C:        "+stats.QSizeC);
         System.out.println("Tamaño Promedio Cola Servidor: "+stats.QSizeS);
         System.out.println();
-        System.out.println("Promedio de Permamencia General de Archivo:        "+stats.generalAverageTime);        
+        System.out.println("Promedio de Permamencia General de Archivo:        "+stats.generalAverageTime);         
         System.out.println("Promedio de Permanencia de Archivo Prioridad 1:    "+stats.averageTime1);
         System.out.println("Promedio de Permanencia de Archivo Prioridad 2:    "+stats.averageTime2);
         System.out.println();
@@ -219,6 +241,8 @@ public class ControladorEventos {
         System.out.println("Promedio de Revisiones por Archivo:   "+stats.averageChecks);
         System.out.println();
         System.out.println();
+        
+        simulationStats.add(stats);
     }
     
     // Se setea el tiempo del token con el valor obtenido de la interfaz
@@ -348,6 +372,7 @@ public class ControladorEventos {
             priorityFileA1.add(A);
         }else{
             priorityFileA2.add(A);
+            //System.out.println("Prioridad 2");
         }
         
         maqA.time = timeFileA() + clock;            // Se calcula el tiempo siguiente cuando se va a dar otra llegada
@@ -950,7 +975,7 @@ public class ControladorEventos {
 
             int quantityVirus = (int)randomWithRange(0,3); 
             
-            if(quantityVirus == 0){
+            if(quantityVirus >= 0){
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (temp.size / 8);
@@ -968,7 +993,7 @@ public class ControladorEventos {
                 passes++;
                 // almacenar revisiones
             }
-            if(quantityVirus == 1){
+            if(quantityVirus >= 1){
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (3 * temp.size / 16);
@@ -986,7 +1011,7 @@ public class ControladorEventos {
                 events.add(laar);
                 passes++;
             }
-            if(quantityVirus == 2){
+            if(quantityVirus >= 2){
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
@@ -1003,7 +1028,7 @@ public class ControladorEventos {
                 events.add(laar);
                 passes++;
             }
-            if(quantityVirus == 3){
+            if(quantityVirus >= 3){
                 Event sla = new Event();
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
@@ -1018,6 +1043,8 @@ public class ControladorEventos {
             lasa.time = 1000000;
             events.add(lasa);
         }
+        totalChecks += passes;
+        ++quantityOfChecks;
         virusCheck.add(passes);
     }
     
@@ -1025,6 +1052,7 @@ public class ControladorEventos {
         Event sla = events.poll();
         sla.numEvent = 11;
         clock = sla.getTime();
+        int passes = 0;
         
         antivirusAvailable = true;
         if(serverFiles.size() != 0){
@@ -1032,7 +1060,7 @@ public class ControladorEventos {
             File temp = serverFiles.get(0);            
             int quantityVirus = (int)randomWithRange(0,3);
             
-            if(quantityVirus == 0){                
+            if(quantityVirus >= 0){                
                 sla.numEvent = 11;
                 sla.time = clock + (temp.size / 8);
                 events.add(sla);
@@ -1043,10 +1071,11 @@ public class ControladorEventos {
                 laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
+                passes++;
                 // almacenar revisiones
             }
             
-            if(quantityVirus == 1){                
+            if(quantityVirus >= 1){                
                 sla.numEvent = 11;
                 sla.time = clock + (3 * temp.size / 16);
                 events.add(sla);
@@ -1057,10 +1086,11 @@ public class ControladorEventos {
                 laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
+                passes++;
                 // almacenar revisiones                
             }
             
-            if(quantityVirus == 2){                
+            if(quantityVirus >= 2){                
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
                 events.add(sla);
@@ -1071,19 +1101,24 @@ public class ControladorEventos {
                 laar.nombre = "LAAR";
                 events.add(laar);                
                 routerFiles.add(temp);
+                passes++;
                 // almacenar revisiones
             }
             
-            if(quantityVirus == 3){
+            if(quantityVirus >= 3){
                 sla.numEvent = 11;
                 sla.time = clock + (11 * temp.size / 48);
                 events.add(sla);
+                passes++;
                 // almacenar revisiones
             }
         }else{
             sla.time = 1000000;
             events.add(sla);
         }
+        totalChecks += passes;
+        ++quantityOfChecks;
+        virusCheck.add(passes);
     }
     
     public void laar(){                                                         // Llegada de archivo a router
@@ -1137,11 +1172,11 @@ public class ControladorEventos {
             routerFiles.remove(0);
             generalFileTime.add(clock - temp.systemTime);   //agrega tiempo de archivo en el sistema 
             if(temp.priority == 1){
-                System.out.println("entroooooooooooo 1");
+                //System.out.println("entroooooooooooo 1");
                 fileTime1.add(clock - temp.systemTime);
             }
             else{
-                                                System.out.println("entroooooooooooo ");
+                                                //System.out.println("entroooooooooooo ");
                 fileTime2.add(clock - temp.systemTime);
             }
             srlt1.time = clock + (temp.size / 64);

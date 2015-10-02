@@ -398,7 +398,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
     String eventName = "";
     
     if(modoLento){
-        sleep = 500;
+        sleep = 5;
     }else{
         sleep = 0;
     }
@@ -549,7 +549,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
                     break;
             }
             
-            finalSeconds = calendar.get(Calendar.SECOND) + 0.002;
+            finalSeconds = calendar.get(Calendar.SECOND) + 0.0002;
             //System.out.println("segundos finales "+finalSeconds);
             totalSeconds += (finalSeconds - initialSeconds);
             //System.out.println("nuevo total "+totalSeconds);
@@ -625,7 +625,7 @@ public class VentadaPrincipal extends javax.swing.JFrame {
         
         Statistics tempStat = new Statistics();
         Statistics stats = new Statistics();
-   
+        
         for(int i = 0; i < simulationStats.size()-2; i++){
             tempStat = simulationStats.get(i);
             //tiempos
@@ -638,13 +638,13 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             stats.QSizeC += tempStat.QSizeC;
             stats.QSizeS += tempStat.QSizeS;
             //archivos enviados
-            stats.averageSentFiles = tempStat.averageSentFiles;
+            stats.averageSentFiles += tempStat.averageSentFiles;
             //pasadas antivirus 
-            stats.averageChecks = tempStat.averageChecks;
+            stats.averageChecks += tempStat.averageChecks;
         }
             stats.generalAverageTime = stats.generalAverageTime/simulationStats.size();
-            stats.averageTime1 = stats.generalAverageTime/simulationStats.size();
-            stats.averageTime2 = stats.generalAverageTime/simulationStats.size();
+            stats.averageTime1 = stats.averageTime1/simulationStats.size();
+            stats.averageTime2 = stats.averageTime2/simulationStats.size();
             //colas
             stats.QSizeA = stats.QSizeA/simulationStats.size();
             stats.QSizeB = stats.QSizeB/simulationStats.size();
@@ -653,6 +653,10 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             //archivos enviados
             stats.averageSentFiles = stats.averageSentFiles/simulationStats.size();
             //pasadas antivirus 
+            
+            //System.out.println("checks en stats: "+stats.averageChecks);
+            //System.out.println("cantidad: "+simulationStats.size());
+            
             stats.averageChecks = stats.averageChecks/simulationStats.size();
             
             System.out.println("Estadísticas Finales");
@@ -669,7 +673,16 @@ public class VentadaPrincipal extends javax.swing.JFrame {
             System.out.println();
             System.out.println("Promedio Archivos Enviados por Token: "+stats.averageSentFiles);
             System.out.println("Promedio de Revisiones por Archivo:   "+stats.averageChecks);
+            
+            
+            
+            
             System.out.println();
+            
+            
+            
+            
+            
     }
     
     private void tiempoTtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiempoTtxtActionPerformed
