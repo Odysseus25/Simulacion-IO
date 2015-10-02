@@ -355,7 +355,7 @@ public class ControladorEventos {
     
     //define el tamano de cada archivo
     public int fileSize(){
-     return (int)randomWithRange(1, 64);   
+     return (int)randomWithRange(2, 128);   
     }
     
     
@@ -628,7 +628,7 @@ public class ControladorEventos {
             
             Event LASA = new Event();                                           // Nuevo evento para este unico archivo
             LASA.numEvent = 10;
-            LASA.time = clock + (C.size * 1/2) + (1/4);                         // Tiempo de llegada al servidor de antivirus
+            LASA.time = clock + (C.size * 1/2) + (1/4);                       // Tiempo de llegada al servidor de antivirus
             LASA.nombre = "Llega archivo a antivirus";
             events.add(LASA);
             serverFiles.add(C); 
