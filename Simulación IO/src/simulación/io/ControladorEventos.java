@@ -329,7 +329,7 @@ public class ControladorEventos {
         while(temp == 1){
             temp = Math.random();
         }
-        return ( (-1*(Math.log(1 - temp)))/4 );
+        return ( (-25*(Math.log(1 - temp))) );
     } 
     
     public double timeFileB(){
